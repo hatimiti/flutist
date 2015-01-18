@@ -34,23 +34,6 @@
 		<nature>org.eclipse.wst.common.project.facet.core.nature</nature>
 		<nature>org.eclipse.wst.jsdt.core.jsNature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>flutist-base</name>
-			<type>2</type>
-			<locationURI>PROJECT_LOC/flutist-base</locationURI>
-		</link>
-		<link>
-			<name>flutist-common</name>
-			<type>2</type>
-			<locationURI>PROJECT_LOC/flutist-common</locationURI>
-		</link>
-		<link>
-			<name>product</name>
-			<type>2</type>
-			<locationURI>PROJECT_LOC/product</locationURI>
-		</link>
-	</linkedResources>
 	<filteredResources>
 		<filter>
 			<id>1421470729314</id>
