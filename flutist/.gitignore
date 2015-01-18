@@ -1,2 +1,5 @@
 /build/
 /.gradle/
+/flutist-base/
+/flutist-common/
+/product/
