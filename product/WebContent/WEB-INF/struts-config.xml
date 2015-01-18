@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+          "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+
+<!-- ======================================== Form Bean Definitions -->
+    <form-beans></form-beans>
+<!-- ================================= Global Exception Definitions -->
+    <global-exceptions></global-exceptions>
+<!-- =================================== Global Forward Definitions -->
+    <global-forwards></global-forwards>
+<!-- =================================== Action Mapping Definitions -->
+    <action-mappings></action-mappings>
+<!-- ===================================== Controller Configuration -->
+
+    <controller
+        maxFileSize="1024K"
+        bufferSize="1024"
+        processorClass="com.github.hatimiti.flutist.base.action.JRequestProcessor"
+        multipartClass="org.seasar.struts.upload.S2MultipartRequestHandler"/>
+
+
+<!-- ================================ Message Resources Definitions -->
+
+    <message-resources parameter="sysenv"       key="sysenv"                           factory="org.seasar.struts.util.S2PropertyMessageResourcesFactory"/>
+    <message-resources parameter="application"  key="application"                      factory="org.seasar.struts.util.S2PropertyMessageResourcesFactory"/>
+    <message-resources parameter="application"  key="org.apache.struts.action.MESSAGE" factory="org.seasar.struts.util.S2PropertyMessageResourcesFactory"/>
+    <message-resources parameter="versatile"    key="versatile"                        factory="org.seasar.struts.util.S2PropertyMessageResourcesFactory"/>
+
+<!-- ======================================= Plug Ins Configuration -->
+
+    <plug-in className="org.seasar.struts.validator.S2ValidatorPlugIn">
+        <set-property
+          property="pathnames"
+          value="/WEB-INF/validator-rules.xml"/>
+    </plug-in>
+</struts-config>
+

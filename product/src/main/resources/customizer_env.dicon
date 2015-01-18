@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
+	"http://www.seasar.org/dtd/components24.dtd">
+<components>
+  <!-- ##### 環境毎に異なるカスタマイザコンポーネントを定義する ##### -->
+  <component name="myActionCustomizer" class="com.github.hatimiti.flutist.base.action.JActionCustomizer" />
+</components>

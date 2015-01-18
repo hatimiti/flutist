@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
+	"http://www.seasar.org/dtd/components24.dtd">
+<components>
+  <include path="convention.dicon"/>
+  <include path="aop.dicon"/>
+  <include path="j2ee.dicon"/>
+  <component name="actionMessagesThrowsInterceptor" class="org.seasar.struts.interceptor.ActionMessagesThrowsInterceptor"/>
+
+  <component name="fieldConvertInterceptor" class="com.github.hatimiti.flutist.base.interceptor.FieldConvertInterceptor" />
+  <component name="validationInterceptor" class="com.github.hatimiti.flutist.base.interceptor.ValidationInterceptor" />
+  <component name="registFieldsInSessionInterceptor" class="com.github.hatimiti.flutist.base.interceptor.RegistFieldsInSessionInterceptor" />
+  <component name="tokenInterceptor" class="com.github.hatimiti.flutist.base.interceptor.TokenInterceptor" />
+<!--
+  <component name="setCommonColumnInterceptor" class="kite.common.interceptor.SetCommonColumnInterceptor" />
+  <component name="setLanguageInterceptor" class="kite.common.interceptor.SetLanguageInterceptor" />
+  <component name="exceptionThrowsInterceptor" class="kite.common.interceptor.ExceptionThrowsInterceptor" />
+  
+  <component name="checkLoginInterceptor" class="kite.common.interceptor.CheckLoginInterceptor">
+    <property name="checkPaths">{
+      "intra\\..*"
+    }</property>
+    <property name="uncheckPaths"></property>
+  </component>
+
+  <component class="kite.common.support.SystemConstantsAutoRegister">
+    TooManyRegistrationRuntimeException 対応 http://d.hatena.ne.jp/idesaku/20081030/1225357831
+    <property name="customizer">null</property>
+  </component> -->
+
+</components>

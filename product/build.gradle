@@ -1,0 +1,7 @@
+//apply plugin: 'war'
+
+//dependencies DEPENDENCIES_BASE
+dependencies {
+//	compile project(':flutist-common')
+	compile project(':flutist-base')
+}
