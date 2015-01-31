@@ -10,6 +10,8 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.SerializationUtils;
 import org.seasar.util.beans.util.BeanUtil;
 import org.seasar.util.lang.ClassUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * オブジェクト全般ユーティリティクラス
@@ -103,14 +105,13 @@ public final class _Obj {
 		return BeanUtil.copyBeanToNewBean(src, dest);
 	}
 
-	// TODO hatimiti logger
-//	/**
-//	 * Logger オブジェクトを取得する．
-//	 * @return log4j のロガーオブジェクト
-//	 */
-//	public static Logger getLogger() {
-//		return Logger.getLogger(new Throwable().getStackTrace()[1].getClassName());
-//	}
+	/**
+	 * Get the logging object.
+	 * @return Get the logging object of current stack trace.
+	 */
+	public static Logger getLogger() {
+		return LoggerFactory.getLogger(new Throwable().getStackTrace()[1].getClassName());
+	}
 
 	// TODO hatimiti trim to flutist-base
 //	/**
