@@ -2,6 +2,7 @@ package com.github.hatimiti.flutist.common.util;
 
 import java.io.Serializable;
 import java.util.AbstractMap;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -47,16 +48,13 @@ public final class _Obj {
 	 * @param values
 	 * @return
 	 */
+	@SafeVarargs
 	public static <O> boolean isEmptyAnyIn(O... values) {
 		if (isEmpty(values)) {
 			return true;
 		}
-		for (Object value : values) {
-			if (isEmpty(value)) {
-				return true;
-			}
-		}
-		return false;
+		return Arrays.stream(values)
+			.anyMatch(v -> isEmpty(v));
 	}
 
 	/**
@@ -65,16 +63,13 @@ public final class _Obj {
 	 * @param 判定文字列配列
 	 * @return null または空配列の場合は true を返す．<br>
 	 */
+	@SafeVarargs
 	public static <O> boolean isEmptyAllIn(O... values) {
 		if (isEmpty(values)) {
 			return true;
 		}
-		for (Object value : values) {
-			if (isNotEmpty(value)) {
-				return false;
-			}
-		}
-		return true;
+		return !Arrays.stream(values)
+				.anyMatch(v -> isNotEmpty(v));
 	}
 
 	public static boolean eq(Object a, Object b) {
