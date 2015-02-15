@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.seasar.util.lang.MethodUtil;
 
@@ -118,20 +119,41 @@ public final class _Ref {
 	 * @param fieldName 検索対象フィールド名
 	 * @return　フィールドが存在すればそのフィールド、そうでなければ null を返す．
 	 */
-	public static Field getFieldByName(
+	public static Optional<Field> getFieldByName(
 			Object target,
 			String fieldName) {
 		if (target == null || _Obj.isEmpty(fieldName)) {
 			return null;
 		}
 		Field[] fields = target.getClass().getDeclaredFields();
-		for (Field field : fields) {
-			field.setAccessible(true);
-			if (fieldName.equals(field.getName())) {
-				return field;
-			}
+		return Arrays.stream(fields).map(f -> {
+				f.setAccessible(true);
+				return f;
+			})
+			.filter(f -> fieldName.equals(f.getName()))
+			.findFirst();
+	}
+
+	/**
+	 * Get the value by specified field name of target.
+	 * If the field is not exist, return Optional.empty() value.
+	 * @param target searching target
+	 * @param fieldName 
+	 * @return
+	 */
+	public static Optional<Object> getFieldValueByName(
+			final Object target,
+			final String fieldName) {
+		
+		Optional<Field> field = getFieldByName(target, fieldName);
+		if (!field.isPresent()) {
+			return Optional.empty();
 		}
-		return null;
+		try {
+			return Optional.ofNullable(field.get().get(target));
+		} catch (IllegalAccessException | IllegalArgumentException e) {
+			return Optional.empty();
+		}
 	}
 
 	/**
