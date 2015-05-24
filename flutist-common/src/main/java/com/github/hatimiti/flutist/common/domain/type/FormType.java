@@ -4,8 +4,8 @@ import static com.github.hatimiti.flutist.common.util._Obj.*;
 
 import com.github.hatimiti.flutist.common.domain.supports.Condition;
 import com.github.hatimiti.flutist.common.domain.supports.InputAttribute;
+import com.github.hatimiti.flutist.common.message.AppMessages;
 import com.github.hatimiti.flutist.common.util._Obj;
-import com.github.hatimiti.flutist.common.validation.ValidationMessages;
 import com.github.hatimiti.flutist.common.validation.Vval;
 import com.github.hatimiti.flutist.common.validation.validator.RequiredFieldValidator;
 
@@ -54,15 +54,15 @@ public abstract class FormType
 		}
 	}
 
-	public void valid(final ValidationMessages errors) {
+	public void valid(final AppMessages errors) {
 		valid(errors, (String) null, (Integer) null);
 	}
 
-	public void valid(final ValidationMessages errors, final String name) {
+	public void valid(final AppMessages errors, final String name) {
 		valid(errors, name, (Integer) null);
 	}
 
-	public void valid(final ValidationMessages errors, final String name, final Integer idx) {
+	public void valid(final AppMessages errors, final String name, final Integer idx) {
 		if (this.isRequiredCheckTarget) {
 			new RequiredFieldValidator(errors).check(Vval.of(getVal()), getProperty(name, idx), this.label);
 		}
@@ -93,7 +93,7 @@ public abstract class FormType
 	}
 
 	protected boolean isValidVal() {
-		ValidationMessages errors = new ValidationMessages();
+		AppMessages errors = new AppMessages();
 		customValid(errors, "");
 		return errors.isEmpty();
 	}
@@ -119,7 +119,7 @@ public abstract class FormType
 	}
 
 	public abstract int getLength();
-	protected abstract void customValid(ValidationMessages errors, String propertyName);
+	protected abstract void customValid(AppMessages errors, String propertyName);
 
 	@Override
 	public String toString() {

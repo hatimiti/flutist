@@ -1,7 +1,7 @@
 package com.github.hatimiti.flutist.common.validation.validator;
 
+import com.github.hatimiti.flutist.common.message.AppMessages;
 import com.github.hatimiti.flutist.common.util._Obj;
-import com.github.hatimiti.flutist.common.validation.ValidationMessages;
 import com.github.hatimiti.flutist.common.validation.Vval;
 
 /**
@@ -16,7 +16,7 @@ public class RequiredFieldValidator extends BaseFieldValidator {
 	public static final String REQUIRED_FIELD_VALIDATOR_KEY =
 		"valid.required";
 
-	public RequiredFieldValidator(ValidationMessages messages) {
+	public RequiredFieldValidator(AppMessages messages) {
 		super(messages);
 	}
 	

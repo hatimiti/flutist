@@ -1,6 +1,7 @@
 package com.github.hatimiti.flutist.common.domain.type;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ArrayListType<O>
 		extends ListType<O, ArrayList<O>> {
@@ -9,8 +10,8 @@ public class ArrayListType<O>
 		super(new ArrayList<O>());
 	}
 	
-	public ArrayListType(ArrayList<O> list) {
-		super(list);
+	public ArrayListType(List<O> list) {
+		super(new ArrayList<O>(list));
 	}
 
 }

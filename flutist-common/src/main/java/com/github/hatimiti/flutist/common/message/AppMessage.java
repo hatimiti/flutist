@@ -1,10 +1,10 @@
-package com.github.hatimiti.flutist.common.validation;
+package com.github.hatimiti.flutist.common.message;
 
 import static java.util.Objects.*;
 
 import java.io.Serializable;
 
-public class ValidationMessage implements Serializable {
+public class AppMessage implements Serializable {
 
 	/**
 	 * <p>The message key or literal message. If isResource is true, this field means literal message.</p>
@@ -21,15 +21,23 @@ public class ValidationMessage implements Serializable {
 	 */
 	protected boolean isResource = true;
 
-	public ValidationMessage(String key, Object... params) {
+	public AppMessage(String key, Object... params) {
 		this(false, key, params);
 	}
 
-	public ValidationMessage(boolean isResource, String keyOrMessage, Object... params) {
+	public AppMessage(boolean isResource, String keyOrMessage, Object... params) {
 		requireNonNull(keyOrMessage);
 		this.isResource = isResource;
 		this.keyOrMessage = keyOrMessage;
 		this.params = params;
+	}
+	
+	public String getKeyOrMessage() {
+		return this.keyOrMessage;
+	}
+	
+	public boolean isResource() {
+		return this.isResource;
 	}
 
 	/**

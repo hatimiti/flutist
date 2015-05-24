@@ -2,16 +2,16 @@ package com.github.hatimiti.flutist.common.validation.validator;
 
 import static java.util.Objects.*;
 
-import com.github.hatimiti.flutist.common.validation.ValidationMessage;
-import com.github.hatimiti.flutist.common.validation.ValidationMessages;
+import com.github.hatimiti.flutist.common.message.AppMessage;
+import com.github.hatimiti.flutist.common.message.AppMessages;
 import com.github.hatimiti.flutist.common.validation.Vval;
 
 public abstract class BaseFieldValidator implements Validator {
 
-	protected ValidationMessages messages;
+	protected AppMessages messages;
 	protected String templateMessageKey;
 
-	protected BaseFieldValidator(ValidationMessages messages) {
+	protected BaseFieldValidator(AppMessages messages) {
 		requireNonNull(messages);
 		this.messages = messages;
 		this.templateMessageKey = getDefaultMessageKey();
@@ -45,7 +45,7 @@ public abstract class BaseFieldValidator implements Validator {
 			final String property,
 			final Object... params) {
 		
-		messages.add(property, new ValidationMessage(this.templateMessageKey, params));
+		messages.add(property, new AppMessage(this.templateMessageKey, params));
 	}
 	
 	protected abstract boolean checkSpecifically(Vval value);
