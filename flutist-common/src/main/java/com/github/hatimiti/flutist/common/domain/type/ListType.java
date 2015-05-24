@@ -1,9 +1,11 @@
-package com.github.hatimiti.flutist.base.domain.type;
+package com.github.hatimiti.flutist.common.domain.type;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Objects;
+import java.util.function.Predicate;
 
 public abstract class ListType<O, E extends List<O>>
 		extends Type<E>
@@ -136,4 +138,16 @@ public abstract class ListType<O, E extends List<O>>
 		return this.list.subList(paramInt1, paramInt2);
 	}
 
+	protected boolean removeAllIf(Predicate<O> filter) {
+		Objects.requireNonNull(filter);
+		boolean r = false;
+		for (int i = size() - 1; 0 <= i; i--) {
+			if (!filter.test(getVal().get(i))) {
+				continue;
+			}
+			this.list.remove(i);
+			r |= true;
+		}
+		return r;
+	}
 }

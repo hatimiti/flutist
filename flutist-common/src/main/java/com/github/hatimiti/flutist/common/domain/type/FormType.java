@@ -1,16 +1,16 @@
-package com.github.hatimiti.flutist.base.domain.type;
+package com.github.hatimiti.flutist.common.domain.type;
 
-import java.io.Serializable;
+import static com.github.hatimiti.flutist.common.util._Obj.*;
 
-import org.apache.struts.action.ActionMessages;
-
-import com.github.hatimiti.flutist.base.support.annotation.Condition;
-
-import fw.domain.supports.InputAttribute;
+import com.github.hatimiti.flutist.common.domain.supports.Condition;
+import com.github.hatimiti.flutist.common.domain.supports.InputAttribute;
+import com.github.hatimiti.flutist.common.util._Obj;
+import com.github.hatimiti.flutist.common.validation.ValidationMessages;
+import com.github.hatimiti.flutist.common.validation.Vval;
+import com.github.hatimiti.flutist.common.validation.validator.RequiredFieldValidator;
 
 public abstract class FormType
-		extends Type<String>
-		implements Serializable {
+		extends Type<String> {
 
 	@Condition
 	protected String val;
@@ -26,10 +26,10 @@ public abstract class FormType
 			final String propertyName,
 			final String label) {
 
-//		if (_Obj.isEmpty(propertyName)
-//				|| _Obj.isEmpty(label)) {
-//			 throw new IllegalArgumentException("propertyName, label は必須です。");
-//		}
+		if (_Obj.isEmpty(propertyName)
+				|| _Obj.isEmpty(label)) {
+			 throw new IllegalArgumentException("propertyName, label は必須です。");
+		}
 
 		this.inputAttribute = inputAttribute;
 		this.propertyName = propertyName;
@@ -54,17 +54,17 @@ public abstract class FormType
 		}
 	}
 
-	public void valid(final ActionMessages errors) {
+	public void valid(final ValidationMessages errors) {
 		valid(errors, (String) null, (Integer) null);
 	}
 
-	public void valid(final ActionMessages errors, final String name) {
+	public void valid(final ValidationMessages errors, final String name) {
 		valid(errors, name, (Integer) null);
 	}
 
-	public void valid(final ActionMessages errors, final String name, final Integer idx) {
+	public void valid(final ValidationMessages errors, final String name, final Integer idx) {
 		if (this.isRequiredCheckTarget) {
-			new RequiredFieldValidator().check(getVal(), errors, getProperty(name, idx), this.label);
+			new RequiredFieldValidator(errors).check(Vval.of(getVal()), getProperty(name, idx), this.label);
 		}
 		customValid(errors, getProperty(name, idx));
 	}
@@ -93,12 +93,11 @@ public abstract class FormType
 	}
 
 	protected boolean isValidVal() {
-		ActionMessages errors = new ActionMessages();
+		ValidationMessages errors = new ValidationMessages();
 		customValid(errors, "");
 		return errors.isEmpty();
 	}
 
-	@Beta
 	public FormType inCompleteRequiredCondition() {
 
 		if (ne(InputAttribute.CONDITION, this.inputAttribute)) {
@@ -109,7 +108,6 @@ public abstract class FormType
 		return this;
 	}
 
-	@Beta
 	public FormType notInCompleteRequiredCondition() {
 
 		if (ne(InputAttribute.CONDITION, this.inputAttribute)) {
@@ -121,7 +119,7 @@ public abstract class FormType
 	}
 
 	public abstract int getLength();
-	protected abstract void customValid(ActionMessages errors, String propertyName);
+	protected abstract void customValid(ValidationMessages errors, String propertyName);
 
 	@Override
 	public String toString() {

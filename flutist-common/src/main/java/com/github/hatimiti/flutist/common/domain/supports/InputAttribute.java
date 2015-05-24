@@ -1,4 +1,4 @@
-package com.github.hatimiti.flutist.base.domain.supports;
+package com.github.hatimiti.flutist.common.domain.supports;
 
 /**
  * 入力フィールドが、必須入力か、任意入力かを表す

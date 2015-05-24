@@ -1,4 +1,4 @@
-package com.github.hatimiti.flutist.base.domain.type;
+package com.github.hatimiti.flutist.common.domain.type;
 
 import java.util.ArrayList;
 

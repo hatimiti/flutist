@@ -1,13 +1,15 @@
-package com.github.hatimiti.flutist.base.domain.type;
+package com.github.hatimiti.flutist.common.domain.type;
+
+import java.io.Serializable;
 
 /**
  * ドメイン領域における、全ての型の基底クラス．
  *
- * @author m-kakimi
+ * @author hatimiti
  *
  * @param <T> ドメイン型の基となる基本型(Integer, Double, String など)
  */
-public abstract class Type<T> {
+public abstract class Type<T> implements Serializable {
 
 	/**
 	 * 自身を表す値を取得する。

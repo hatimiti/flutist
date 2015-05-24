@@ -1,11 +1,9 @@
-package com.github.hatimiti.flutist.base.support.annotation;
+package com.github.hatimiti.flutist.common.domain.supports;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import com.github.hatimiti.flutist.base.interceptor.supports.DoTrim;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
@@ -14,8 +12,6 @@ public @interface Condition {
 	boolean escape() default true;
 
 	boolean session() default false;
-
-	DoTrim doTrim() default @DoTrim;
 
 	/**
 	 * セッション属性名と同一の値が
