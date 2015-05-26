@@ -31,7 +31,7 @@ public class AppMessages implements Serializable {
 		getBy(property).add(message);
 	}
 	
-	public List<AppMessage> getCopyBy(String property) {
+	public List<AppMessage> copyMessageListOf(String property) {
 		requireNonNull(property);
 		return new AppMessageList(getBy(property));
 	}
