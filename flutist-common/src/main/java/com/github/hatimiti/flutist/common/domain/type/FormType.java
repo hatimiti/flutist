@@ -4,7 +4,7 @@ import static com.github.hatimiti.flutist.common.util._Obj.*;
 
 import com.github.hatimiti.flutist.common.domain.supports.Condition;
 import com.github.hatimiti.flutist.common.domain.supports.InputAttribute;
-import com.github.hatimiti.flutist.common.message.AppMessages;
+import com.github.hatimiti.flutist.common.message.AppMessagesContainer;
 import com.github.hatimiti.flutist.common.util._Obj;
 import com.github.hatimiti.flutist.common.validation.Vval;
 import com.github.hatimiti.flutist.common.validation.validator.RequiredFieldValidator;
@@ -54,19 +54,19 @@ public abstract class FormType
 		}
 	}
 
-	public void valid(final AppMessages errors) {
-		valid(errors, (String) null, (Integer) null);
+	public void valid(final AppMessagesContainer container) {
+		valid(container, (String) null, (Integer) null);
 	}
 
-	public void valid(final AppMessages errors, final String name) {
-		valid(errors, name, (Integer) null);
+	public void valid(final AppMessagesContainer container, final String name) {
+		valid(container, name, (Integer) null);
 	}
 
-	public void valid(final AppMessages errors, final String name, final Integer idx) {
+	public void valid(final AppMessagesContainer container, final String name, final Integer idx) {
 		if (this.isRequiredCheckTarget) {
-			new RequiredFieldValidator(errors).check(Vval.of(getVal()), getProperty(name, idx), this.label);
+			new RequiredFieldValidator(container).check(Vval.of(getVal()), getProperty(name, idx), this.label);
 		}
-		customValid(errors, getProperty(name, idx));
+		customValid(container, getProperty(name, idx));
 	}
 
 	protected String getProperty(final String name, final Integer idx) {
@@ -93,9 +93,9 @@ public abstract class FormType
 	}
 
 	protected boolean isValidVal() {
-		AppMessages errors = new AppMessages();
-		customValid(errors, "");
-		return errors.isEmpty();
+		AppMessagesContainer container = new AppMessagesContainer();
+		customValid(container, "");
+		return container.isEmpty();
 	}
 
 	public FormType inCompleteRequiredCondition() {
@@ -119,7 +119,7 @@ public abstract class FormType
 	}
 
 	public abstract int getLength();
-	protected abstract void customValid(AppMessages errors, String propertyName);
+	protected abstract void customValid(AppMessagesContainer container, String propertyName);
 
 	@Override
 	public String toString() {

@@ -1,24 +1,25 @@
 package com.github.hatimiti.flutist.common.validation.validator;
 
+import static com.github.hatimiti.flutist.common.message.AppMessageLevel.*;
 import static java.util.Objects.*;
 
-import com.github.hatimiti.flutist.common.message.AppMessage;
-import com.github.hatimiti.flutist.common.message.AppMessages;
+import com.github.hatimiti.flutist.common.message.AppMessagesContainer;
+import com.github.hatimiti.flutist.common.message.OwnedMessages;
 import com.github.hatimiti.flutist.common.validation.Vval;
 
 public abstract class BaseFieldValidator implements Validator {
 
-	protected AppMessages messages;
+	protected AppMessagesContainer container;
 	protected String templateMessageKey;
 
-	protected BaseFieldValidator(AppMessages messages) {
-		requireNonNull(messages);
-		this.messages = messages;
+	protected BaseFieldValidator(AppMessagesContainer container) {
+		requireNonNull(container);
+		this.container = container;
 		this.templateMessageKey = getDefaultMessageKey();
 	}
 
 	protected BaseFieldValidator key(String templateMessageKey) {
-		requireNonNull(messages);
+		requireNonNull(templateMessageKey);
 		this.templateMessageKey = templateMessageKey;
 		return this;
 	}
@@ -26,26 +27,26 @@ public abstract class BaseFieldValidator implements Validator {
 	@Override
 	public boolean check(
 			final Vval value,
-			final String property,
+			final String owner,
 			final Object... params) {
 
 		boolean result = checkSpecifically(value);
 		if (!result) {
-			addMessage(property, params);
+			addMessage(owner, params);
 		}
 		return result;
 	}
 
-	protected void addMessage(final String property, final Object... params) {
-		addMessage(false, property, params);
+	protected void addMessage(final String owner, final Object... params) {
+		addMessage(false, owner, params);
 	}
 
 	protected void addMessage(
 			final boolean isGlobal,
-			final String property,
+			final String owner,
 			final Object... params) {
 		
-		messages.add(property, new AppMessage(this.templateMessageKey, params));
+		container.add(new OwnedMessages(owner, ERROR, this.templateMessageKey, params));
 	}
 	
 	protected abstract boolean checkSpecifically(Vval value);

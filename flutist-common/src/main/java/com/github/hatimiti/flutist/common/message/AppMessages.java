@@ -1,61 +1,71 @@
 package com.github.hatimiti.flutist.common.message;
 
-import static java.util.Objects.*;
-
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import static com.github.hatimiti.flutist.common.message.AppMessageLevel.*;
+import static java.util.stream.Collectors.*;
 
 import com.github.hatimiti.flutist.common.domain.type.ArrayListType;
 
-public class AppMessages implements Serializable {
+public abstract class AppMessages extends ArrayListType<AppMessage> {
 
-	protected Map<String, AppMessageList> messages;
-	
-	public AppMessages() {
-		this.messages = new HashMap<>();
+	protected AppMessages() {
 	}
 	
-	public AppMessages(String property, String key, Object... params) {
-		this(property, false, key, params);
+	protected AppMessages(AppMessage message) {
+		add(message);
+	}
+	
+	protected AppMessages(AppMessageLevel level, String key, Object... params) {
+		add(createMessage(level, key, params));
 	}
 
-	public AppMessages(String property, boolean isResource, String keyOrMessage, Object... params) {
-		add(property, new AppMessage(isResource, keyOrMessage, params));
+	protected AppMessages(AppMessageLevel level, boolean isResource, String keyOrMessage, Object... params) {
+		add(createMessage(level, isResource, keyOrMessage, params));
+	}
+
+	public boolean addInfo(String key, Object... params) {
+		return add(createMessage(INFO, key, params));
+	}
+	public boolean addInfo(String key, boolean isResource, Object... params) {
+		return add(createMessage(INFO, isResource, key, params));
+	}
+	public AppMessages filterByInfoLevel() {
+		return filterByLevel(INFO);
+	}
+
+	public boolean addWarn(String key, Object... params) {
+		return add(createMessage(WARN, key, params));
+	}
+	public boolean addWarn(String key, boolean isResource, Object... params) {
+		return add(createMessage(WARN, isResource, key, params));
+	}	
+	public AppMessages filterByWarnLevel() {
+		return filterByLevel(WARN);
 	}
 	
-	public void add(String property, AppMessage message) {
-		requireNonNull(property);
-		requireNonNull(message);
-		getBy(property).add(message);
+	public boolean addError(String key, Object... params) {
+		return add(createMessage(ERROR, key, params));
+	}
+	public boolean addError(String key, boolean isResource, Object... params) {
+		return add(createMessage(ERROR, isResource, key, params));
+	}
+	public AppMessages filterByErrorLevel() {
+		return filterByLevel(ERROR);
+	}
+
+	private AppMessage createMessage(
+			AppMessageLevel level, String key, Object... params) {
+		return new AppMessage(level, key, params);
 	}
 	
-	public List<AppMessage> copyMessageListOf(String property) {
-		requireNonNull(property);
-		return new AppMessageList(getBy(property));
+	private AppMessage createMessage(
+			AppMessageLevel level, boolean isResource, String keyOrMessage, Object... params) {
+		return new AppMessage(level, isResource, keyOrMessage, params);
 	}
 	
-	public boolean hasMessages() {
-		return !this.messages.isEmpty();
+	private AppMessages filterByLevel(AppMessageLevel level) {
+		return this.stream().filter(m -> level == m.getLevel()).collect(toCollection(this::createInstance));
 	}
 	
-	public boolean isEmpty() {
-		return !hasMessages();
-	}
-	
-	protected List<AppMessage> getBy(String property) {
-		return this.messages.merge(property, new AppMessageList(), (o, n) -> o);
-	}
-	
-	protected static class AppMessageList 
-			extends ArrayListType<AppMessage> {
-		
-		protected AppMessageList() {
-		}
-		protected AppMessageList(List<AppMessage> list) {
-			super(list);
-		}
-	}
+	protected abstract AppMessages createInstance();
 	
 }

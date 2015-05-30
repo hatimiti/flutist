@@ -3,8 +3,10 @@ package com.github.hatimiti.flutist.common.message;
 import static java.util.Objects.*;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Comparator;
 
-public class AppMessage implements Serializable {
+public class AppMessage implements Serializable, Comparator<AppMessage> {
 
 	/**
 	 * <p>The message key or literal message. If isResource is true, this field means literal message.</p>
@@ -14,30 +16,55 @@ public class AppMessage implements Serializable {
 	/**
 	 * <p>The replacement values for this mesasge.</p>
 	 */
-	protected Object params[] = null;
+	protected Object[] params = null;
 
+	/**
+	 * <p>Indicates level of this message.</p>
+	 */
+	protected AppMessageLevel level;
+	
+	/**
+	 * <p>Indicates order of this message.</p>
+	 */
+	protected int order;
+	
 	/**
 	 * <p>Indicates whether the key is taken to be as a  bundle key [true] or literal value [false].</p>
 	 */
 	protected boolean isResource = true;
 
-	public AppMessage(String key, Object... params) {
-		this(false, key, params);
+	public AppMessage(AppMessageLevel level, String key, Object... params) {
+		this(level, true, key, params);
 	}
 
-	public AppMessage(boolean isResource, String keyOrMessage, Object... params) {
+	public AppMessage(AppMessageLevel level, boolean isResource, String keyOrMessage, Object... params) {
+		requireNonNull(level);
 		requireNonNull(keyOrMessage);
+		this.level = level;
 		this.isResource = isResource;
 		this.keyOrMessage = keyOrMessage;
 		this.params = params;
 	}
 	
+	public AppMessageLevel getLevel() {
+		return this.level;
+	}
+
 	public String getKeyOrMessage() {
 		return this.keyOrMessage;
 	}
 	
+	public Object[] getParams() {
+		return Arrays.copyOf(this.params, this.params.length);
+	}
+	
 	public boolean isResource() {
 		return this.isResource;
+	}
+	
+	public AppMessage order(int order) {
+		this.order = order;
+		return this;
 	}
 
 	/**
@@ -61,6 +88,12 @@ public class AppMessage implements Serializable {
 		}
 		buff.append("]");
 		return buff.toString();
+	}
+
+	@Override
+	public int compare(AppMessage o1, AppMessage o2) {
+		// TODO
+		return 0;
 	}
 
 }
