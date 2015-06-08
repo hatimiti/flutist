@@ -12,11 +12,11 @@ public class AppMessagesContainer implements Serializable {
 
 	/** key=owner(GlobalMessagesの場合はOptinal.empty()) */
 	protected Map<Optional<String>, AppMessages> messages;
-	
+
 	public AppMessagesContainer() {
 		this.messages = new HashMap<>();
 	}
-	
+
 	public void add(AppMessages messages) {
 		requireNonNull(messages);
 		if (messages instanceof OwnedMessages) {
@@ -26,65 +26,65 @@ public class AppMessagesContainer implements Serializable {
 			getGlobalMessageList().addAll(messages);
 		}
 	}
-	
+
 	public void addAll(AppMessagesContainer container) {
 		requireNonNull(container);
 		this.messages.putAll(container.messages);
 	}
-	
+
 	public boolean isEmpty() {
 		return this.messages.isEmpty();
 	}
-	
+
 	public List<AppMessage> getGlobalMessages() {
 		return getGlobalMessageList();
 	}
-	
+
 	public List<AppMessage> getInfoGlobalMessages() {
 		return getGlobalMessageList().filterByInfoLevel();
 	}
-	
+
 	public List<AppMessage> getWarnGlobalMessages() {
 		return getGlobalMessageList().filterByWarnLevel();
 	}
-	
+
 	public List<AppMessage> getErrorGlobalMessages() {
 		return getGlobalMessageList().filterByErrorLevel();
 	}
-	
+
 	public List<AppMessage> getOwnedMessages(String owner) {
 		return getOwnedMessageList(owner);
 	}
-	
+
 	public List<AppMessage> getInfoOwnedMessages(String owner) {
 		return getOwnedMessageList(owner).filterByInfoLevel();
 	}
-	
+
 	public List<AppMessage> getWarnOwnedMessages(String owner) {
 		return getOwnedMessageList(owner).filterByWarnLevel();
 	}
-	
+
 	public List<AppMessage> getErrorOwnedMessages(String owner) {
 		return getOwnedMessageList(owner).filterByErrorLevel();
 	}
-	
+
 	public boolean hasGlobalMessages() {
 		return !this.messages.isEmpty();
 	}
-	
-	public boolean hasMessagesOf(String owner) {
-		requireNonNull(messages);
-		return !this.messages.isEmpty();
+
+	public boolean hasOwnedMessagesOf(String owner) {
+		requireNonNull(owner);
+		return !getOwnedMessages(owner).isEmpty();
 	}
-	
+
 	protected AppMessages getGlobalMessageList() {
 		return this.messages.computeIfAbsent(Optional.empty(), k -> new GlobalMessages());
 	}
-	
+
 	protected AppMessages getOwnedMessageList(String owner) {
 		return this.messages.computeIfAbsent(Optional.of(owner), k -> new OwnedMessages(owner));
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder r = new StringBuilder(
@@ -92,5 +92,5 @@ public class AppMessagesContainer implements Serializable {
 		r.append("[" + this.messages.toString() + "]");
 		return r.toString();
 	}
-	
+
 }
