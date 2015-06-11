@@ -1,5 +1,10 @@
+apply plugin: 'maven'
+
 def SL4J_VER        = '1.7.7'
 def LOGBACK_VER     = '1.1.2'
+
+group = 'com.github.hatimiti'
+version = '1.0'
 
 dependencies {
 	compile files('.lib/javax.servlet-api-3.1.0.jar')
@@ -22,3 +27,25 @@ dependencies {
 
 def defaultEncoding = 'UTF-8'
 [compileJava, compileTestJava]*.options*.encoding = defaultEncoding
+
+compileJava {
+	options.debug = true
+	options.debugOptions.debugLevel = "source,vars,lines"
+}
+
+task sourcesJar(type: Jar, dependsOn: classes){
+	from sourceSets.main.allSource
+	classifier = 'source'
+}
+
+artifacts {
+	archives sourcesJar
+}
+
+uploadArchives {
+	repositories {
+		mavenDeployer {
+			repository(url: "file:${System.getProperty('user.home')}/.m2/repository")
+		}
+	}
+}
