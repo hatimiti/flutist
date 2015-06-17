@@ -77,6 +77,11 @@ public class AppMessagesContainer implements Serializable {
 		return !getOwnedMessages(owner).isEmpty();
 	}
 
+	public AppMessages getAllMessageList() {
+		return this.messages.values().stream()
+				.reduce((a, b) -> { a.addAll(b); return a; }).orElse(new GlobalMessages());
+	}
+
 	protected AppMessages getGlobalMessageList() {
 		return this.messages.computeIfAbsent(Optional.empty(), k -> new GlobalMessages());
 	}
