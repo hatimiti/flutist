@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.seasar.util.lang.MethodUtil;
 
@@ -26,11 +28,19 @@ public final class _Ref {
 	 */
 	private _Ref() {}
 
+	public static List<Method> getMethodsByName(
+			final Class<?> targetClass,
+			final String methodName) {
+		return Stream.of(targetClass.getMethods())
+			.filter(m -> m.getName().equals(methodName))
+			.collect(Collectors.toList());
+	}
+
 	public static Optional<Method> getMethod(
 			final Class<?> targetClass,
 			final String methodName,
 			final Class<?>... parameterTypes) {
-		
+
 		try {
 			return ofNullable(targetClass.getMethod(methodName, parameterTypes));
 		} catch (Exception t) {
@@ -43,7 +53,7 @@ public final class _Ref {
 	 */
 	public static List<Field> getAllFields(
 			final Class<?> clazz) {
-		
+
 		List<Field> fieldList = new ArrayList<Field>();
 
 		Class<?> superClazz = clazz.getSuperclass();
@@ -62,7 +72,7 @@ public final class _Ref {
 	public static List<Field> getAllFieldsByAnnotation(
 			final Class<?> clazz,
 			final Class<? extends Annotation> annotationClass) {
-		
+
 		List<Field> fieldList = new ArrayList<>();
 
 		Class<?> superClazz = clazz.getSuperclass();
@@ -89,7 +99,7 @@ public final class _Ref {
 	public static Optional<Object> getFieldValueByAnnotation(
 			final Object target,
 			final Class<? extends Annotation> annotationClass) {
-		
+
 		try {
 			Optional<Field> field = getFieldByAnnotation(target, annotationClass);
 			return field.isPresent()
@@ -129,7 +139,7 @@ public final class _Ref {
 	public static Optional<Field> getFieldByName(
 			final Object target,
 			final String fieldName) {
-		
+
 		if (target == null || _Obj.isEmpty(fieldName)) {
 			return null;
 		}
@@ -146,13 +156,13 @@ public final class _Ref {
 	 * Get the value by specified field name of target.
 	 * If the field is not exist, return Optional.empty() value.
 	 * @param target searching target
-	 * @param fieldName 
+	 * @param fieldName
 	 * @return
 	 */
 	public static Optional<Object> getFieldValueByName(
 			final Object target,
 			final String fieldName) {
-		
+
 		Optional<Field> field = getFieldByName(target, fieldName);
 		if (!field.isPresent()) {
 			return Optional.empty();
@@ -190,7 +200,7 @@ public final class _Ref {
 		if (obj == null) {
 			return result;
 		}
-		
+
 		stream(obj.getClass().getFields())
 			.forEach(f -> {
 				f.setAccessible(true);
