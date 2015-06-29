@@ -1,12 +1,14 @@
 package com.github.hatimiti.flutist.common.message;
 
 import static java.util.Objects.*;
+import static java.util.function.Function.*;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
 
 public class AppMessagesContainer implements Serializable {
 
@@ -66,6 +68,14 @@ public class AppMessagesContainer implements Serializable {
 
 	public List<AppMessage> getErrorOwnedMessages(String owner) {
 		return getOwnedMessageList(owner).filterByErrorLevel();
+	}
+
+	public List<AppMessage> getOwnedMessagesByPrefix(String ownerPrefix) {
+		return this.messages.entrySet().stream()
+			.filter(e -> e.getKey().map(identity()).orElse("").startsWith(ownerPrefix))
+			.map(e -> e.getValue())
+			.reduce((a, b) -> { a.addAll(b); return a; })
+			.orElse(new OwnedMessages(ownerPrefix));
 	}
 
 	public boolean hasGlobalMessages() {
