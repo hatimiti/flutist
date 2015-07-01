@@ -5,15 +5,15 @@ import static java.util.stream.Collectors.*;
 
 import com.github.hatimiti.flutist.common.domain.type.ArrayListType;
 
-public abstract class AppMessages extends ArrayListType<AppMessage> {
+public abstract class AppMessages<M extends AppMessages<?>> extends ArrayListType<AppMessage> {
 
 	protected AppMessages() {
 	}
-	
+
 	protected AppMessages(AppMessage message) {
 		add(message);
 	}
-	
+
 	protected AppMessages(AppMessageLevel level, String key, Object... params) {
 		add(createMessage(level, key, params));
 	}
@@ -28,7 +28,7 @@ public abstract class AppMessages extends ArrayListType<AppMessage> {
 	public boolean addInfo(String key, boolean isResource, Object... params) {
 		return add(createMessage(INFO, isResource, key, params));
 	}
-	public AppMessages filterByInfoLevel() {
+	public M filterByInfoLevel() {
 		return filterByLevel(INFO);
 	}
 
@@ -37,18 +37,18 @@ public abstract class AppMessages extends ArrayListType<AppMessage> {
 	}
 	public boolean addWarn(String key, boolean isResource, Object... params) {
 		return add(createMessage(WARN, isResource, key, params));
-	}	
-	public AppMessages filterByWarnLevel() {
+	}
+	public M filterByWarnLevel() {
 		return filterByLevel(WARN);
 	}
-	
+
 	public boolean addError(String key, Object... params) {
 		return add(createMessage(ERROR, key, params));
 	}
 	public boolean addError(String key, boolean isResource, Object... params) {
 		return add(createMessage(ERROR, isResource, key, params));
 	}
-	public AppMessages filterByErrorLevel() {
+	public M filterByErrorLevel() {
 		return filterByLevel(ERROR);
 	}
 
@@ -56,16 +56,16 @@ public abstract class AppMessages extends ArrayListType<AppMessage> {
 			AppMessageLevel level, String key, Object... params) {
 		return new AppMessage(level, key, params);
 	}
-	
+
 	private AppMessage createMessage(
 			AppMessageLevel level, boolean isResource, String keyOrMessage, Object... params) {
 		return new AppMessage(level, isResource, keyOrMessage, params);
 	}
-	
-	private AppMessages filterByLevel(AppMessageLevel level) {
+
+	private M filterByLevel(AppMessageLevel level) {
 		return this.stream().filter(m -> level == m.getLevel()).collect(toCollection(this::createInstance));
 	}
-	
-	protected abstract AppMessages createInstance();
-	
+
+	protected abstract M createInstance();
+
 }

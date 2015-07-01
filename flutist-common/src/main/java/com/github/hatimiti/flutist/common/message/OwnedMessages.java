@@ -3,23 +3,29 @@ package com.github.hatimiti.flutist.common.message;
 import java.util.Objects;
 
 
-public class OwnedMessages extends AppMessages {
+public class OwnedMessages extends AppMessages<OwnedMessages> {
 
-	protected String owner;
+	protected Owner owner;
 
-	public OwnedMessages(String owner) {
+//	static final Collector<OwnedMessages, ?, OwnedMessages> merge
+//		= Collector.of(OwnedMessages::new, (l, t) -> t.addAll(l), (l, t) -> { t.addAll(l); return t; }, Characteristics.IDENTITY_FINISH);
+//
+//	private OwnedMessages() {
+//	}
+
+	public OwnedMessages(Owner owner) {
 		Objects.requireNonNull(owner);
 		this.owner = owner;
 	}
-	
-	public OwnedMessages(String owner, AppMessage message) {
+
+	public OwnedMessages(Owner owner, AppMessage message) {
 		super(message);
 		Objects.requireNonNull(owner);
 		this.owner = owner;
 	}
-	
+
 	public OwnedMessages(
-			String owner,
+			Owner owner,
 			AppMessageLevel level, String key, Object... params) {
 		super(level, key, params);
 		Objects.requireNonNull(owner);
@@ -27,19 +33,19 @@ public class OwnedMessages extends AppMessages {
 	}
 
 	public OwnedMessages(
-			String owner,
+			Owner owner,
 			AppMessageLevel level, boolean isResource, String keyOrMessage, Object... params) {
 		super(level, isResource, keyOrMessage, params);
 		Objects.requireNonNull(owner);
 		this.owner = owner;
 	}
-	
-	public String getOwner() {
+
+	public Owner getOwner() {
 		return this.owner;
 	}
 
 	@Override
-	protected AppMessages createInstance() {
+	protected OwnedMessages createInstance() {
 		return new OwnedMessages(this.owner);
 	}
 

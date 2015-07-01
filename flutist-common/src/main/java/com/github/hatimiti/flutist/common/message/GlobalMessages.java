@@ -1,15 +1,15 @@
 package com.github.hatimiti.flutist.common.message;
 
 
-public class GlobalMessages extends AppMessages {
+public class GlobalMessages extends AppMessages<GlobalMessages> {
 
 	public GlobalMessages() {
 	}
-	
+
 	public GlobalMessages(AppMessage message) {
 		super(message);
 	}
-	
+
 	public GlobalMessages(
 			AppMessageLevel level, String key, Object... params) {
 		super(level, key, params);
@@ -21,7 +21,7 @@ public class GlobalMessages extends AppMessages {
 	}
 
 	@Override
-	protected AppMessages createInstance() {
+	protected GlobalMessages createInstance() {
 		return new GlobalMessages();
 	}
 

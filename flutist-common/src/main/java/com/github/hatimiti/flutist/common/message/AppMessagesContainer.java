@@ -1,28 +1,28 @@
 package com.github.hatimiti.flutist.common.message;
 
 import static java.util.Objects.*;
-import static java.util.function.Function.*;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 public class AppMessagesContainer implements Serializable {
 
 	/** key=owner(GlobalMessagesの場合はOptinal.empty()) */
-	protected Map<Optional<String>, AppMessages> messages;
+	protected Map<Optional<Owner>, AppMessages<?>> messages;
 
 	public AppMessagesContainer() {
 		this.messages = new HashMap<>();
 	}
 
-	public void add(AppMessages messages) {
+	public void add(AppMessages<?> messages) {
 		requireNonNull(messages);
 		if (messages instanceof OwnedMessages) {
-			String owner = ((OwnedMessages) messages).getOwner();
+			Owner owner = ((OwnedMessages) messages).getOwner();
 			getOwnedMessageList(owner).addAll(messages);
 		} else {
 			getGlobalMessageList().addAll(messages);
@@ -38,66 +38,72 @@ public class AppMessagesContainer implements Serializable {
 		return this.messages.isEmpty();
 	}
 
-	public List<AppMessage> getGlobalMessages() {
+	public GlobalMessages getGlobalMessages() {
 		return getGlobalMessageList();
 	}
 
-	public List<AppMessage> getInfoGlobalMessages() {
+	public GlobalMessages getInfoGlobalMessages() {
 		return getGlobalMessageList().filterByInfoLevel();
 	}
 
-	public List<AppMessage> getWarnGlobalMessages() {
+	public GlobalMessages getWarnGlobalMessages() {
 		return getGlobalMessageList().filterByWarnLevel();
 	}
 
-	public List<AppMessage> getErrorGlobalMessages() {
+	public GlobalMessages getErrorGlobalMessages() {
 		return getGlobalMessageList().filterByErrorLevel();
 	}
 
-	public List<AppMessage> getOwnedMessages(String owner) {
+	public OwnedMessages getOwnedMessages(Owner owner) {
 		return getOwnedMessageList(owner);
 	}
 
-	public List<AppMessage> getInfoOwnedMessages(String owner) {
+	public OwnedMessages getInfoOwnedMessages(Owner owner) {
 		return getOwnedMessageList(owner).filterByInfoLevel();
 	}
 
-	public List<AppMessage> getWarnOwnedMessages(String owner) {
+	public OwnedMessages getWarnOwnedMessages(Owner owner) {
 		return getOwnedMessageList(owner).filterByWarnLevel();
 	}
 
-	public List<AppMessage> getErrorOwnedMessages(String owner) {
+	public OwnedMessages getErrorOwnedMessages(Owner owner) {
 		return getOwnedMessageList(owner).filterByErrorLevel();
 	}
 
-	public List<AppMessage> getOwnedMessagesByPrefix(String ownerPrefix) {
+//	public Map<Owner, OwnedMessages> getOwnedMessagesByPrefixGroupByOwner(String ownerPrefix) {
+//		return this.messages.entrySet().stream()
+//			.filter(e -> e.getKey().map(k -> k.toString()).orElse("").startsWith(ownerPrefix))
+//			.map(e -> (OwnedMessages) e.getValue())
+//			.collect(Collectors.groupingBy(OwnedMessages::getOwner, OwnedMessages.merge));
+//	}
+
+	public List<OwnedMessages> getOwnedMessagesByPrefix(String ownerPrefix) {
 		return this.messages.entrySet().stream()
-			.filter(e -> e.getKey().map(identity()).orElse("").startsWith(ownerPrefix))
-			.map(e -> e.getValue())
-			.reduce((a, b) -> { a.addAll(b); return a; })
-			.orElse(new OwnedMessages(ownerPrefix));
+			.filter(e -> e.getKey().map(k -> k.toString()).orElse("").startsWith(ownerPrefix))
+			.map(e -> (OwnedMessages) e.getValue())
+			.collect(Collectors.toList());
 	}
 
 	public boolean hasGlobalMessages() {
-		return !this.messages.isEmpty();
+		return !this.messages.get(Optional.empty()).isEmpty();
 	}
 
-	public boolean hasOwnedMessagesOf(String owner) {
+	public boolean hasOwnedMessagesOf(Owner owner) {
 		requireNonNull(owner);
 		return !getOwnedMessages(owner).isEmpty();
 	}
 
-	public AppMessages getAllMessageList() {
+	public AppMessages<?> getAllMessageList() {
 		return this.messages.values().stream()
 				.reduce((a, b) -> { a.addAll(b); return a; }).orElse(new GlobalMessages());
 	}
 
-	protected AppMessages getGlobalMessageList() {
-		return this.messages.computeIfAbsent(Optional.empty(), k -> new GlobalMessages());
+	protected GlobalMessages getGlobalMessageList() {
+		return (GlobalMessages) this.messages.computeIfAbsent(Optional.empty(), k -> new GlobalMessages());
 	}
 
-	protected AppMessages getOwnedMessageList(String owner) {
-		return this.messages.computeIfAbsent(Optional.of(owner), k -> new OwnedMessages(owner));
+	protected OwnedMessages getOwnedMessageList(Owner owner) {
+		return (OwnedMessages) this.messages.computeIfAbsent(Optional.of(owner), k -> new OwnedMessages(owner));
 	}
 
 	@Override
