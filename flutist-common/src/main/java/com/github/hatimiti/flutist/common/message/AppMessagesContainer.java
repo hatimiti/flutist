@@ -3,7 +3,7 @@ package com.github.hatimiti.flutist.common.message;
 import static java.util.Objects.*;
 
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -16,7 +16,7 @@ public class AppMessagesContainer implements Serializable {
 	protected Map<Optional<Owner>, AppMessages<?>> messages;
 
 	public AppMessagesContainer() {
-		this.messages = new HashMap<>();
+		this.messages = new LinkedHashMap<>();
 	}
 
 	public void add(AppMessages<?> messages) {
@@ -32,6 +32,10 @@ public class AppMessagesContainer implements Serializable {
 	public void addAll(AppMessagesContainer container) {
 		requireNonNull(container);
 		this.messages.putAll(container.messages);
+	}
+
+	public int size() {
+		return this.messages.size();
 	}
 
 	public boolean isEmpty() {
@@ -69,13 +73,6 @@ public class AppMessagesContainer implements Serializable {
 	public OwnedMessages getErrorOwnedMessages(Owner owner) {
 		return getOwnedMessageList(owner).filterByErrorLevel();
 	}
-
-//	public Map<Owner, OwnedMessages> getOwnedMessagesByPrefixGroupByOwner(String ownerPrefix) {
-//		return this.messages.entrySet().stream()
-//			.filter(e -> e.getKey().map(k -> k.toString()).orElse("").startsWith(ownerPrefix))
-//			.map(e -> (OwnedMessages) e.getValue())
-//			.collect(Collectors.groupingBy(OwnedMessages::getOwner, OwnedMessages.merge));
-//	}
 
 	public List<OwnedMessages> getOwnedMessagesByPrefix(String ownerPrefix) {
 		return this.messages.entrySet().stream()
