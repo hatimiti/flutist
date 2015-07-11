@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -66,6 +67,26 @@ public final class _Ref {
 		return fieldList;
 	}
 
+	public static Optional<Field> getFieldIncludedSuperByName(
+			final Class<?> target,
+			final String fieldName) {
+
+		Objects.requireNonNull(target);
+		Objects.requireNonNull(fieldName);
+
+		Class<?> clazz = target;
+		Optional<Field> result;
+		do {
+			result = getFieldByName(clazz, fieldName);
+			if (result.isPresent()) {
+				return result;
+			}
+			clazz = clazz.getSuperclass();
+		} while (clazz != null);
+
+		return Optional.empty();
+	}
+
 	/**
 	 * annotationClass のついた 親クラスのフィールドも取得
 	 */
@@ -101,7 +122,7 @@ public final class _Ref {
 			final Class<? extends Annotation> annotationClass) {
 
 		try {
-			Optional<Field> field = getFieldByAnnotation(target, annotationClass);
+			Optional<Field> field = getFieldByAnnotation(target.getClass(), annotationClass);
 			return field.isPresent()
 					? ofNullable(field.get().get(target)) : empty();
 		} catch (Exception e) {
@@ -118,10 +139,10 @@ public final class _Ref {
 	 * そのフィールド、そうでなければ null を返す．
 	 */
 	public static Optional<Field> getFieldByAnnotation(
-			final Object target,
+			final Class<?> target,
 			final Class<? extends Annotation> annotationClass) {
 
-		return Arrays.stream(target.getClass().getDeclaredFields())
+		return Arrays.stream(target.getDeclaredFields())
 			.map(f -> {
 				f.setAccessible(true);
 				return f;
@@ -134,16 +155,16 @@ public final class _Ref {
 	 * 対象のクラスの指定した名前のフィールドを取得する．
 	 * @param target 走査対象オブジェクト
 	 * @param fieldName 検索対象フィールド名
-	 * @return　フィールドが存在すればそのフィールド、そうでなければ null を返す．
+	 * @return フィールドが存在すればそのフィールド、そうでなければ null を返す．
 	 */
 	public static Optional<Field> getFieldByName(
-			final Object target,
+			final Class<?> target,
 			final String fieldName) {
 
-		if (target == null || _Obj.isEmpty(fieldName)) {
-			return null;
-		}
-		Field[] fields = target.getClass().getDeclaredFields();
+		Objects.requireNonNull(target);
+		Objects.requireNonNull(fieldName);
+
+		Field[] fields = target.getDeclaredFields();
 		return Arrays.stream(fields).map(f -> {
 				f.setAccessible(true);
 				return f;
@@ -163,7 +184,10 @@ public final class _Ref {
 			final Object target,
 			final String fieldName) {
 
-		Optional<Field> field = getFieldByName(target, fieldName);
+		Objects.requireNonNull(target);
+		Objects.requireNonNull(fieldName);
+
+		Optional<Field> field = getFieldByName(target.getClass(), fieldName);
 		if (!field.isPresent()) {
 			return Optional.empty();
 		}
@@ -183,7 +207,7 @@ public final class _Ref {
 	 * 真、そうでなければ偽の値を返す．
 	 */
 	public static boolean hasAnnotationInFields(
-			Object target,
+			Class<?> target,
 			Class<? extends Annotation> annotationClass) {
 
 		return getFieldByAnnotation(target, annotationClass).isPresent();
