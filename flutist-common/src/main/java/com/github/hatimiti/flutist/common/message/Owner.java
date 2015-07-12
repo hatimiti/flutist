@@ -3,12 +3,11 @@ package com.github.hatimiti.flutist.common.message;
 import static com.github.hatimiti.flutist.common.util._Obj.*;
 import static com.github.hatimiti.flutist.common.util._Str.*;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
 import com.github.hatimiti.flutist.common.util._Obj;
 
 public class Owner {
+
+	static final Owner GLOBAL_OWNER = new Owner("", "", -1);
 
 	private String property;
 	private String name;
@@ -21,7 +20,7 @@ public class Owner {
 	}
 
 	public static Owner empty() {
-		return of("");
+		return of("_");
 	}
 
 	public static Owner of(String property) {
@@ -33,7 +32,10 @@ public class Owner {
 	}
 
 	public static Owner of(String property, String name, Integer index) {
-		return new Owner(toEmpty(property), toEmpty(name), index);
+		if (_Obj.isEmpty(property)) {
+			throw new IllegalArgumentException("Not appoint a null character in a property.");
+		}
+		return new Owner(property, toEmpty(name), index);
 	}
 
 	@Override
@@ -69,11 +71,7 @@ public class Owner {
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder()
-			.append(property)
-			.append(name)
-			.append(index)
-			.toHashCode();
+		return this.toString().hashCode();
 	}
 
 	@Override
@@ -81,12 +79,7 @@ public class Owner {
 		if (obj == null || !(obj instanceof Owner)) {
 			return false;
 		}
-		Owner target = (Owner) obj;
-		return new EqualsBuilder()
-			.append(this.property, target.property)
-			.append(this.name, target.name)
-			.append(this.index, target.index)
-			.isEquals();
+		return this.toString().equals(obj.toString());
 	}
 
 }

@@ -6,14 +6,15 @@ import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 
 public class AppMessagesContainer implements Serializable {
 
-	/** key=owner(GlobalMessagesの場合はOptinal.empty()) */
-	protected Map<Optional<Owner>, AppMessages<?>> messages;
+	/** key=owner(GlobalMessagesの場合はOptinal#GLOBAL_OWNER) */
+	protected Map<Owner, AppMessages<?>> messages;
 
 	public AppMessagesContainer() {
 		this.messages = new LinkedHashMap<>();
@@ -76,7 +77,7 @@ public class AppMessagesContainer implements Serializable {
 
 	public List<OwnedMessages> getOwnedMessagesByPrefix(String ownerPrefix) {
 		return this.messages.entrySet().stream()
-			.filter(e -> e.getKey().map(k -> k.toString()).orElse("").startsWith(ownerPrefix))
+			.filter(e -> e.getKey().toString().startsWith(ownerPrefix))
 			.map(e -> (OwnedMessages) e.getValue())
 			.collect(Collectors.toList());
 	}
@@ -92,22 +93,23 @@ public class AppMessagesContainer implements Serializable {
 
 	public AppMessages<?> getAllMessageList() {
 		return this.messages.values().stream()
-				.reduce((a, b) -> { a.addAll(b); return a; }).orElse(new GlobalMessages());
+				.reduce(new GlobalMessages(), (a, b) -> { a.addAll(b); return a; });
 	}
 
 	protected GlobalMessages getGlobalMessageList() {
-		return (GlobalMessages) this.messages.computeIfAbsent(Optional.empty(), k -> new GlobalMessages());
+		return (GlobalMessages) this.messages.computeIfAbsent(Owner.GLOBAL_OWNER, k -> new GlobalMessages());
 	}
 
 	protected OwnedMessages getOwnedMessageList(Owner owner) {
-		return (OwnedMessages) this.messages.computeIfAbsent(Optional.of(owner), k -> new OwnedMessages(owner));
+		Objects.requireNonNull(owner);
+		return (OwnedMessages) this.messages.computeIfAbsent(owner, k -> new OwnedMessages(owner));
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder r = new StringBuilder(
-				this.getClass().getName() + "@" + this.hashCode() + System.lineSeparator());
-		r.append("[" + this.messages.toString() + "]");
+				this.getClass().getName() + "@" + this.hashCode());
+		r.append("(" + this.messages.toString() + ")");
 		return r.toString();
 	}
 
