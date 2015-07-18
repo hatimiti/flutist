@@ -1,7 +1,5 @@
 package com.github.hatimiti.flutist.common.util;
 
-
-
 /**
  * 数値に対する操作を行うユーティリティクラス．
  * @author hatimiti
@@ -13,61 +11,72 @@ public final class _Num {
 	 */
 	private _Num() { }
 
-	public static Long toL_Null(String val) {
+	/**
+	 * 文字列をLong値として取得します．<br />
+	 * Long値へ変換できないような文字列が指定された場合はNull(null)を返します．
+	 * @param val 変換対象の数字
+	 * @return Long 数値
+	 */
+	public static Long asLongOrNull(String val) {
+		return asLongOrDefault(val, null);
+	}
+
+	/**
+	 * 文字列をLong値として取得します．<br />
+	 * Long値へ変換できないような文字列が指定された場合はZero(0L)を返します．
+	 * @param val 変換対象の数字
+	 * @return Long 数値
+	 */
+	public static Long asLongOrZero(String val) {
+		return asLongOrDefault(val, 0L);
+	}
+
+	/**
+	 * 文字列を Long 値として取得します．<br />
+	 * Long 値へ変換できないような文字列が指定された場合は指定されたデフォルト値を返します．
+	 * @param val 変換対象の数字
+	 * @param def 変換不可時のデフォルト値
+	 * @return Long 数値
+	 */
+	public static Long asLongOrDefault(String val, Long def) {
 		try {
 			return Long.valueOf(val);
 		} catch (Throwable t) {
-			return null;
-		}
-	}
-
-	public static Long toL_Zero(String val) {
-		try {
-			return Long.valueOf(val);
-		} catch (Throwable t) {
-			return 0L;
+			return def;
 		}
 	}
 
 	/**
-	 * 渡された文字列を整数型へ変換する．
-	 * 変換できない場合は null を返す．
+	 * 文字列を Integer 型として取得します．<br />
+	 * Integer 値へ変換できないような文字列が指定された場合は Null を返します．
 	 */
-	public static Integer toI_Null(
-			final String value) {
-		try {
-			return Integer.parseInt(value);
-		} catch (Throwable t) {
-			return null;
-		}
+	public static Integer asIntOrNull(String val) {
+		return asIntOrDefault(val, null);
 	}
 
 	/**
-	 * 渡された文字列を整数型へ変換する．
-	 * 変換できない場合は default 値を返す．
+	 * 文字列を Integer 値として取得します．<br />
+	 * Integer 値へ変換できないような文字列が指定された場合は Zero(0) を返します．
+	 * @param val 変換対象の数字
+	 * @return Integer 数値
 	 */
-	public static int toI(
-			final String value,
-			final int defaultValue) {
-		try {
-			return Integer.parseInt(value);
-		} catch (Throwable t) {
-			return defaultValue;
-		}
+	public static Integer asIntOrZero(String val) {
+		return asIntOrDefault(val, 0);
 	}
 
 	/**
-	 * 渡された値が null かどうかチェックし、null の場合は
-	 *  defaultValue に変換して返す．
-	 *  @param value 変換対象の値
-	 *  @param defaultValue null 時の値
-	 *  @return value が null の場合は defaultValue に変換し返す．
-	 *  	null でない場合はそのままの値を返す．
+	 * 文字列を Integer 値として取得します．<br />
+	 * Integer 値へ変換できないような文字列が指定された場合は指定されたデフォルト値を返します．
+	 * @param val 変換対象の数字
+	 * @param def 変換不可時のデフォルト値
+	 * @return Integer 数値
 	 */
-	public static Integer toDefaultValueIfNull(
-			final Integer value,
-			final int defaultValue) {
-		return value == null ? defaultValue : value;
+	public static Integer asIntOrDefault(String val, Integer def) {
+		try {
+			return Integer.valueOf(val);
+		} catch (Throwable t) {
+			return def;
+		}
 	}
 
 }

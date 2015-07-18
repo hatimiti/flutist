@@ -4,7 +4,6 @@ import java.util.regex.Pattern;
 
 import com.github.hatimiti.flutist.common.message.AppMessagesContainer;
 import com.github.hatimiti.flutist.common.util._Obj;
-import com.github.hatimiti.flutist.common.util._Str;
 import com.github.hatimiti.flutist.common.validation.Vval;
 
 /**
@@ -56,7 +55,7 @@ public class TelFieldValidator extends BaseFieldValidator {
 				+ "\\d{2,4}"
 				+ delimiter
 				+ "\\d{4}$");
-		return pattern.matcher(_Str.getLinkedString(delimiter, tel1, tel2, tel3)).matches();
+		return pattern.matcher(String.join(delimiter, tel1, tel2, tel3)).matches();
 	}
 
 	@Override

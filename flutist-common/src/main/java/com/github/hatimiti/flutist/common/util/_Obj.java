@@ -174,8 +174,6 @@ public final class _Obj {
 //		return values;
 //	}
 
-
-
 	/**
 	 * オブジェクトのシャローコピーを行う．
 	 * (参照コピー)
@@ -183,6 +181,7 @@ public final class _Obj {
 	 * @param object シャローコピーの対象オブジェクト
 	 * @return シャローコピーされたオブジェクト
 	 */
+	@SuppressWarnings("unchecked")
 	public static <T> T shallowCopy(T object) {
 		try {
 			return (T) BeanUtils.cloneBean(object);
@@ -229,13 +228,6 @@ public final class _Obj {
 	 */
 	public static String getLeastClassNameLC(final Class<?> clazz) {
 		return _Str.toLowerCaseFirstChar(getLeastClassName(clazz));
-	}
-
-	public static String toStr(final Object value) {
-		if (value instanceof String) {
-			return (String) value;
-		}
-		return value.toString();
 	}
 
 	public static <D> D get(final List<D> list, final int index) {
