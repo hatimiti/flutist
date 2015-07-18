@@ -4,11 +4,10 @@ import com.github.hatimiti.flutist.common.message.AppMessagesContainer;
 import com.github.hatimiti.flutist.common.util._Obj;
 import com.github.hatimiti.flutist.common.validation.Vval;
 
-
 /**
- * 指定の文字が含まれているかどうかのチェックを行うバリデータ．
+ * 指定の文字が含まれているかどうかのチェックバリデータ．
  * @author hatimiti
- *
+ * @see BaseFieldValidator
  */
 public class ContainsCharsFieldValidator extends BaseFieldValidator {
 

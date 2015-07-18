@@ -8,19 +8,20 @@ import com.github.hatimiti.flutist.common.validation.Vval;
 /**
  * URL形式チェックを行うバリデータクラス．
  * @author hatimiti
+ * @see BaseFieldValidator
  */
 public class URLFieldValidator extends BaseFieldValidator {
 
 	/**
 	 * URL形式チェックバリデータのキー文字列定数．
 	 */
-	public static final String URL_FIELD_VALIDATOR_KEY =
-		"valid.url";
+	public static final String VALIDATOR_KEY = "valid.url";
 
 	public URLFieldValidator(AppMessagesContainer container) {
 		super(container);
 	}
 
+	@Override
 	protected boolean checkSpecifically(Vval value) {
 		return checkURL(value.getValues()[0]);
 	}
@@ -42,7 +43,7 @@ public class URLFieldValidator extends BaseFieldValidator {
 
 	@Override
 	protected String getDefaultMessageKey() {
-		return URL_FIELD_VALIDATOR_KEY;
+		return VALIDATOR_KEY;
 	}
 
 }

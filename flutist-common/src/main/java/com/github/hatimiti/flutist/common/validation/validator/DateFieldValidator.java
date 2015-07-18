@@ -9,14 +9,14 @@ import com.github.hatimiti.flutist.common.util._Obj;
 import com.github.hatimiti.flutist.common.validation.Vval;
 
 /**
- * 日付形式チェックを行うバリデータクラス．
+ * 日付形式チェックバリデータ．
  * 例：2008/01/22, 2008/1/22
  * @author hatimiti
+ * @see BaseFieldValidator
  */
 public class DateFieldValidator extends BaseFieldValidator {
 
-	public static final String DATE_FIELD_VALIDATOR_KEY =
-		"valid.date";
+	public static final String VALIDATOR_KEY = "valid.date";
 
 	/**
 	 * 区切り文字列「/」「-」など
@@ -77,7 +77,7 @@ public class DateFieldValidator extends BaseFieldValidator {
 
 	@Override
 	protected String getDefaultMessageKey() {
-		return DATE_FIELD_VALIDATOR_KEY;
+		return VALIDATOR_KEY;
 	}
 
 	public DateFieldValidator delimiter(String delimiter) {

@@ -4,11 +4,10 @@ import com.github.hatimiti.flutist.common.message.AppMessagesContainer;
 import com.github.hatimiti.flutist.common.util._Obj;
 import com.github.hatimiti.flutist.common.validation.Vval;
 
-
 /**
  * 文字数(範囲)チェックを行うバリデータクラス．
  * @author hatimiti
- *
+ * @see BaseFieldValidator
  */
 public class RangeLengthFieldValidator extends BaseFieldValidator {
 

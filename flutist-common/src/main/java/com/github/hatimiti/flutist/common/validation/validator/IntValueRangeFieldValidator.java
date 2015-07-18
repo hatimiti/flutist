@@ -6,7 +6,7 @@ import com.github.hatimiti.flutist.common.validation.Vval;
 
 public class IntValueRangeFieldValidator extends BaseFieldValidator {
 
-	public static final String INT_VALUE_RANGE_FIELD_VALIDATOR_KEY = "valid.int.value.range";
+	public static final String VALIDATOR_KEY = "valid.int.value.range";
 
 	/** 最小数 */
 	protected int min;
@@ -46,7 +46,7 @@ public class IntValueRangeFieldValidator extends BaseFieldValidator {
 
 	@Override
 	protected String getDefaultMessageKey() {
-		return INT_VALUE_RANGE_FIELD_VALIDATOR_KEY;
+		return VALIDATOR_KEY;
 	}
 
 }

@@ -3,17 +3,16 @@ package com.github.hatimiti.flutist.common.validation.validator;
 import com.github.hatimiti.flutist.common.message.AppMessagesContainer;
 import com.github.hatimiti.flutist.common.validation.Vval;
 
-
 /**
- * 整数の最大値チェックを行う．
+ * 整数の最大値チェックバリデータ．
  * 最大値以下であるかどうか．
  * 指定された文字列が整数かどうかも合わせてチェックする．
  * @author hatimiti
+ * @see BaseFieldValidator
  */
 public class IntMaxValueFieldValidator extends BaseFieldValidator {
 
-	public static final String INT_MAX_VALUE_FIELD_VALIDATOR_KEY =
-		"valid.int.max.value";
+	public static final String VALIDATOR_KEY = "valid.int.max.value";
 
 	/** 最大数 */
 	protected int max;
@@ -22,6 +21,7 @@ public class IntMaxValueFieldValidator extends BaseFieldValidator {
 		super(container);
 	}
 
+	@Override
 	protected boolean checkSpecifically(Vval value) {
 		return checkIntMaxValue(value.getValues()[0], this.max);
 	}
@@ -38,8 +38,9 @@ public class IntMaxValueFieldValidator extends BaseFieldValidator {
 		return intVal <= max;
 	}
 
+	@Override
 	protected String getDefaultMessageKey() {
-		return INT_MAX_VALUE_FIELD_VALIDATOR_KEY;
+		return VALIDATOR_KEY;
 	}
 
 	public IntMaxValueFieldValidator setMax(int max) {

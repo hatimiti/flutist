@@ -92,7 +92,7 @@ public final class _Obj {
 		if (ne(src.getClass(), dest.getClass())) {
 			throw new IllegalArgumentException("arguments src and dest must adapt same class type.");
 		}
-		
+
 		BeanUtil.copyBeanToBean(src, dest);
 	}
 
@@ -257,14 +257,6 @@ public final class _Obj {
 			return false;
 		}
 		return list.add(val);
-	}
-
-	/**
-	 * テスト用 main メソッド
-	 * @param args 実行時パラメータ
-	 */
-	public static void main(final String[] args) {
-
 	}
 
 }

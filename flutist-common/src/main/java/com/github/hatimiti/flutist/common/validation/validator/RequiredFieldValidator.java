@@ -7,19 +7,19 @@ import com.github.hatimiti.flutist.common.validation.Vval;
 /**
  * 必須入力チェックを行うバリデータクラス．
  * @author hatimiti
+ * @see BaseFieldValidator
  */
 public class RequiredFieldValidator extends BaseFieldValidator {
 
 	/**
 	 * 必須チェックバリデータのキー文字列定数．
 	 */
-	public static final String REQUIRED_FIELD_VALIDATOR_KEY =
-		"valid.required";
+	public static final String VALIDATOR_KEY = "valid.required";
 
 	public RequiredFieldValidator(AppMessagesContainer container) {
 		super(container);
 	}
-	
+
 	@Override
 	protected boolean checkSpecifically(Vval value) {
 		return checkRequired(value.getValues()[0]);
@@ -38,6 +38,6 @@ public class RequiredFieldValidator extends BaseFieldValidator {
 
 	@Override
 	protected String getDefaultMessageKey() {
-		return REQUIRED_FIELD_VALIDATOR_KEY;
+		return VALIDATOR_KEY;
 	}
 }

@@ -4,13 +4,13 @@ import com.github.hatimiti.flutist.common.message.AppMessagesContainer;
 import com.github.hatimiti.flutist.common.validation.Vval;
 
 /**
- * 少数チェックを行うバリデータクラス
+ * 少数チェックバリデータ．
  * @author hatimiti
+ * @see BaseFieldValidator
  */
 public class DoubleFieldValidator extends BaseFieldValidator {
 
-	public static final String DOUBLE_FIELD_VALIDATOR_KEY =
-		"valid.double";
+	public static final String VALIDATOR_KEY = "valid.double";
 
 	protected DoubleFieldValidator(AppMessagesContainer container) {
 		super(container);
@@ -39,7 +39,7 @@ public class DoubleFieldValidator extends BaseFieldValidator {
 
 	@Override
 	protected String getDefaultMessageKey() {
-		return DOUBLE_FIELD_VALIDATOR_KEY;
+		return VALIDATOR_KEY;
 	}
 
 }

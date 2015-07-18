@@ -4,15 +4,14 @@ import com.github.hatimiti.flutist.common.message.AppMessagesContainer;
 import com.github.hatimiti.flutist.common.util._Obj;
 import com.github.hatimiti.flutist.common.validation.Vval;
 
-
 /**
- * 整数チェックを行うバリデータクラス
+ * 整数チェックバリデータクラス．
  * @author hatimiti
+ * @see BaseFieldValidator
  */
 public class IntFieldValidator extends BaseFieldValidator {
 
-	public static final String INT_FIELD_VALIDATOR_KEY =
-		"valid.int";
+	public static final String VALIDATOR_KEY = "valid.int";
 
 	public IntFieldValidator(AppMessagesContainer container) {
 		super(container);
@@ -44,7 +43,7 @@ public class IntFieldValidator extends BaseFieldValidator {
 
 	@Override
 	protected String getDefaultMessageKey() {
-		return INT_FIELD_VALIDATOR_KEY;
+		return VALIDATOR_KEY;
 	}
 
 }

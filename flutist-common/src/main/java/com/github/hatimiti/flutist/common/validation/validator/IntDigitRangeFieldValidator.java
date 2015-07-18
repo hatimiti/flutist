@@ -5,16 +5,16 @@ import com.github.hatimiti.flutist.common.util._Str;
 import com.github.hatimiti.flutist.common.validation.Vval;
 
 /**
- * 整数の範囲チェックを行う．
+ * 整数桁の範囲チェックを行う．
  * 最小桁以上 かつ 最大桁以下であるかどうか．
  * 指定された文字列が整数かどうかも合わせてチェックする．
  * 「-123」などは3桁と判断してチェックする(マイナス記号は桁数に含めない)．
  * @author hatimiti
+ * @see BaseFieldValidator
  */
 public class IntDigitRangeFieldValidator extends BaseFieldValidator {
 
-	public static final String INT_DIGIT_RANGE_FIELD_VALIDATOR_KEY =
-		"valid.int.digit.range";
+	public static final String VALIDATOR_KEY = "valid.int.digit.range";
 
 	/** 最小桁 */
 	protected int min;
@@ -25,6 +25,7 @@ public class IntDigitRangeFieldValidator extends BaseFieldValidator {
 		super(container);
 	}
 
+	@Override
 	protected boolean checkSpecifically(Vval value) {
 		return checkIntDigitRange(value.getValues()[0], this.min, this.max);
 	}
@@ -49,16 +50,17 @@ public class IntDigitRangeFieldValidator extends BaseFieldValidator {
 		return min <= (_value.length() - minus);
 	}
 
+	@Override
 	protected String getDefaultMessageKey() {
-		return INT_DIGIT_RANGE_FIELD_VALIDATOR_KEY;
+		return VALIDATOR_KEY;
 	}
 
-	public IntDigitRangeFieldValidator setMin(int min) {
+	public IntDigitRangeFieldValidator min(int min) {
 		this.min = min;
 		return this;
 	}
 
-	public IntDigitRangeFieldValidator setMax(int max) {
+	public IntDigitRangeFieldValidator max(int max) {
 		this.max = max;
 		return this;
 	}

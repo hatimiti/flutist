@@ -4,16 +4,14 @@ import com.github.hatimiti.flutist.common.message.AppMessagesContainer;
 import com.github.hatimiti.flutist.common.util._Obj;
 import com.github.hatimiti.flutist.common.validation.Vval;
 
-
 /**
  * 最大文字数チェックを行うバリデータクラス．
  * @author hatimiti
- *
+ * @see BaseFieldValidator
  */
 public class MaxLengthFieldValidator extends BaseFieldValidator {
 
-	public static final String MAX_LENGTH_FIELD_VALIDATOR_KEY =
-		"valid.max.length";
+	public static final String VALIDATOR_KEY = "valid.max.length";
 
 	/** 最大文字数 */
 	protected int max;
@@ -54,7 +52,7 @@ public class MaxLengthFieldValidator extends BaseFieldValidator {
 
 	@Override
 	protected String getDefaultMessageKey() {
-		return MAX_LENGTH_FIELD_VALIDATOR_KEY;
+		return VALIDATOR_KEY;
 	}
 
 }

@@ -12,10 +12,11 @@ import com.github.hatimiti.flutist.common.validation.Vval;
  * 日付(年月)形式チェックを行うバリデータクラス．
  * 例：2008/01, 2008/1
  * @author hatimiti
+ * @see BaseFieldValidator
  */
 public class YearMonthFieldValidator extends BaseFieldValidator {
 
-	public static final String YM_FIELD_VALIDATOR_KEY = "valid.date.ym";
+	public static final String VALIDATOR_KEY = "valid.date.ym";
 
 	/**
 	 * 区切り文字列「/」「-」など
@@ -72,18 +73,14 @@ public class YearMonthFieldValidator extends BaseFieldValidator {
 		return "yyyy" + dlmt + "MM" + dlmt + "dd";
 	}
 
-	@Override
-	protected String getDefaultMessageKey() {
-		return YM_FIELD_VALIDATOR_KEY;
-	}
-
 	public YearMonthFieldValidator delimiter(String delimiter) {
 		this.delimiter = delimiter;
 		return this;
 	}
 
-	public String getDelimiter() {
-		return this.delimiter;
+	@Override
+	protected String getDefaultMessageKey() {
+		return VALIDATOR_KEY;
 	}
 
 }
