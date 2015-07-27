@@ -8,16 +8,15 @@ import com.github.hatimiti.flutist.common.message.AppMessagesContainer;
 import com.github.hatimiti.flutist.common.util._Obj;
 import com.github.hatimiti.flutist.common.validation.Vval;
 
-
 /**
  * クラス変数(静的変数)に含まれるかどうかのチェックを行うバリデータクラス．
  * public static final な変数をチェックするため、コード値チェックなどに利用する．
  * @author hatimiti
+ * @see BaseFieldValidator
  */
 public class StringClassFieldValidator extends BaseFieldValidator {
 
-	public static final String STRING_CLASS_FIELD_VALIDATOR_KEY =
-		"valid.invalid";
+	public static final String VALIDATOR_KEY = "valid.invalid";
 
 	protected Class<?> clazz;
 
@@ -70,7 +69,7 @@ public class StringClassFieldValidator extends BaseFieldValidator {
 
 	@Override
 	protected String getDefaultMessageKey() {
-		return STRING_CLASS_FIELD_VALIDATOR_KEY;
+		return VALIDATOR_KEY;
 	}
 
 }

@@ -6,16 +6,14 @@ import com.github.hatimiti.flutist.common.message.AppMessagesContainer;
 import com.github.hatimiti.flutist.common.util._Obj;
 import com.github.hatimiti.flutist.common.validation.Vval;
 
-
 /**
- * 正規表現による値チェックを行うバリデータクラス
+ * 正規表現による値チェックバリデータ．
  * @author hatimiti
+ * @see BaseFieldValidator
  */
 public class RegexFieldValidator extends BaseFieldValidator {
 
-
-	public static final String REGEX_FIELD_VALIDATOR_KEY =
-		"valid.invalid";
+	public static final String VALIDATOR_KEY = "valid.invalid";
 
 	/**
 	 * 正規表現
@@ -51,13 +49,9 @@ public class RegexFieldValidator extends BaseFieldValidator {
 		return this;
 	}
 
-	public String getRegex() {
-		return this.regex;
-	}
-
 	@Override
 	protected String getDefaultMessageKey() {
-		return REGEX_FIELD_VALIDATOR_KEY;
+		return VALIDATOR_KEY;
 	}
 
 }

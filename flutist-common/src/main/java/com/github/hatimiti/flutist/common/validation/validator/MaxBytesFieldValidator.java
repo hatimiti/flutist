@@ -1,31 +1,41 @@
 package com.github.hatimiti.flutist.common.validation.validator;
 
+import java.nio.charset.Charset;
+import java.util.Objects;
+
 import com.github.hatimiti.flutist.common.message.AppMessagesContainer;
+import com.github.hatimiti.flutist.common.util._Obj;
 import com.github.hatimiti.flutist.common.validation.Vval;
 
 /**
- * 最大バイト数チェックを行うバリデータクラス．
+ * 最大バイト数チェックバリデータ．
  * @author hatimiti
+ * @see BaseFieldValidator
  */
 public class MaxBytesFieldValidator extends BaseFieldValidator {
 
 	/**
 	 * 最大バイト数チェックバリデータのキー文字列定数．
 	 */
-	public static final String MAX_BYTES_FIELD_VALIDATOR_KEY =
-		"valid.max.bytes";
+	public static final String VALIDATOR_KEY = "valid.max.bytes";
 
 	/**
 	 * 最大バイト数
 	 */
-	protected int max;
+	protected long max;
+
+	/**
+	 * エンコーディング
+	 */
+	protected Charset charset = Charset.forName("UTF-8");
 
 	public MaxBytesFieldValidator(AppMessagesContainer container) {
 		super(container);
 	}
 
+	@Override
 	protected boolean checkSpecifically(Vval value) {
-		return checkMaxBytes(value.getValues()[0], this.max);
+		return checkMaxBytes(value.getValues()[0], this.max, this.charset);
 	}
 
 	/**
@@ -35,8 +45,12 @@ public class MaxBytesFieldValidator extends BaseFieldValidator {
 	 * @param max 最大バイト数
 	 * @return 最大バイト数以下であれば true そうでなければ false を返す．
 	 */
-	public static boolean checkMaxBytes(String value, int max) {
-		byte[] bytes = value.getBytes();
+	public static boolean checkMaxBytes(String value, long max, Charset charset) {
+		if (_Obj.isEmpty(value)) {
+			return true;
+		}
+		Objects.requireNonNull(charset);
+		byte[] bytes = value.getBytes(charset);
 		return bytes.length <= max;
 	}
 
@@ -44,14 +58,32 @@ public class MaxBytesFieldValidator extends BaseFieldValidator {
 	 * 最大バイト数を設定する．
 	 * @param max 最大バイト数
 	 */
-	public MaxBytesFieldValidator setMax(int max) {
+	public MaxBytesFieldValidator max(long max) {
 		this.max = max;
+		return this;
+	}
+
+	/**
+	 * エンコードを設定する．
+	 * @param charset エンコード名
+	 */
+	public MaxBytesFieldValidator charset(String charset) {
+		this.charset = Charset.forName(charset);
+		return this;
+	}
+
+	/**
+	 * エンコードを設定する．
+	 * @param charset エンコード名
+	 */
+	public MaxBytesFieldValidator charset(Charset charset) {
+		this.charset = charset;
 		return this;
 	}
 
 	@Override
 	protected String getDefaultMessageKey() {
-		return MAX_BYTES_FIELD_VALIDATOR_KEY;
+		return VALIDATOR_KEY;
 	}
 
 }

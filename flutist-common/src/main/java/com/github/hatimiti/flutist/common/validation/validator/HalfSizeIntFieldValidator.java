@@ -3,16 +3,21 @@ package com.github.hatimiti.flutist.common.validation.validator;
 import com.github.hatimiti.flutist.common.message.AppMessagesContainer;
 import com.github.hatimiti.flutist.common.validation.Vval;
 
-
+/**
+ * 半角数字チェックバリデータ．
+ * @author hatimiti
+ * @see BaseFieldValidator
+ *
+ */
 public class HalfSizeIntFieldValidator extends BaseFieldValidator {
 
-	public static final String HALF_SIZE_INT_FIELD_VALIDATOR_KEY =
-		"valid.half.size.int";
+	public static final String VALIDATOR_KEY = "valid.half.size.int";
 
-	public HalfSizeIntFieldValidator(AppMessagesContainer container) {
-		super(container);
+	public HalfSizeIntFieldValidator(AppMessagesContainer c) {
+		super(c);
 	}
 
+	@Override
 	protected boolean checkSpecifically(Vval value) {
 		return checkHalfSizeInt(value.getValues()[0]);
 	}
@@ -24,7 +29,7 @@ public class HalfSizeIntFieldValidator extends BaseFieldValidator {
 
 	@Override
 	protected String getDefaultMessageKey() {
-		return HALF_SIZE_INT_FIELD_VALIDATOR_KEY;
+		return VALIDATOR_KEY;
 	}
 
 }

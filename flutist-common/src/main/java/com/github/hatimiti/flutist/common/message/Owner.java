@@ -35,7 +35,7 @@ public class Owner {
 		if (_Obj.isEmpty(property)) {
 			throw new IllegalArgumentException("Not appoint a null character in a property.");
 		}
-		return new Owner(property, toEmpty(name), index);
+		return new Owner(property, asStrOrEmpty(name), index);
 	}
 
 	@Override

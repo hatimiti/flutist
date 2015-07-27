@@ -65,8 +65,9 @@ public final class _Http {
 	}
 
 	public static void write(final OutputStream os, final File file) throws IOException {
-		try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(file));
-				BufferedOutputStream out = new BufferedOutputStream(os);) {
+		try (
+				BufferedInputStream in = new BufferedInputStream(new FileInputStream(file));
+				BufferedOutputStream out = new BufferedOutputStream(os)) {
 
 			byte[] buf = new byte[1024];
 			int len;
@@ -80,7 +81,7 @@ public final class _Http {
 	public static void write(final Writer writer, final File file) throws IOException {
 		try (
 				BufferedWriter bw = new BufferedWriter(writer);
-				BufferedReader br = new BufferedReader(new FileReader(file));) {
+				BufferedReader br = new BufferedReader(new FileReader(file))) {
 
 			while (br.ready()) {
 				bw.write(br.readLine());

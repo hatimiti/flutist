@@ -9,11 +9,11 @@ import com.github.hatimiti.flutist.common.validation.Vval;
 /**
  * 半角文字チェックを行うバリデータクラス．
  * @author hatimiti
+ * @see BaseFieldValidator
  */
 public class HalfSizeFieldValidator extends BaseFieldValidator {
 
-	public static final String HALF_SIZE_FIELD_VALIDATOR_KEY =
-		"valid.half.size";
+	public static final String VALIDATOR_KEY = "valid.half.size";
 
 	public HalfSizeFieldValidator(AppMessagesContainer container) {
 		super(container);
@@ -34,7 +34,7 @@ public class HalfSizeFieldValidator extends BaseFieldValidator {
 
 	@Override
 	protected String getDefaultMessageKey() {
-		return HALF_SIZE_FIELD_VALIDATOR_KEY;
+		return VALIDATOR_KEY;
 	}
 
 }

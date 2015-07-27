@@ -7,17 +7,14 @@ import com.github.hatimiti.flutist.common.util._Obj;
 import com.github.hatimiti.flutist.common.validation.Vval;
 
 /**
- * e-mail 形式かどうかのチェックを行うバリデータクラス．
+ * e-mail 形式チェックバリデータ．
  * @author hatimiti
- * @see base.validator.BaseFieldValidatorSupport
+ * @see BaseFieldValidator
  */
 public class EMailFieldValidator extends BaseFieldValidator {
 
-	/**
-	 * e-mail 形式チェックバリデータのキー文字列定数．
-	 */
-	public static final String EMAIL_FIELD_VALIDATOR_KEY =
-		"valid.email";
+	/** e-mail 形式チェックバリデータのキー文字列定数． */
+	public static final String VALIDATOR_KEY = "valid.email";
 
 	public EMailFieldValidator(AppMessagesContainer container) {
 		super(container);
@@ -45,7 +42,7 @@ public class EMailFieldValidator extends BaseFieldValidator {
 
 	@Override
 	protected String getDefaultMessageKey() {
-		return EMAIL_FIELD_VALIDATOR_KEY;
+		return VALIDATOR_KEY;
 	}
 
 }

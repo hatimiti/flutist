@@ -4,21 +4,19 @@ import java.util.regex.Pattern;
 
 import com.github.hatimiti.flutist.common.message.AppMessagesContainer;
 import com.github.hatimiti.flutist.common.util._Obj;
-import com.github.hatimiti.flutist.common.util._Str;
 import com.github.hatimiti.flutist.common.validation.Vval;
 
 /**
  * 電話番号形式かどうかのチェックを行うバリデータクラス．
  * @author hatimiti
- * @see com.github.hatimiti.flutist.common.validation.validator.BaseFieldValidator
+ * @see BaseFieldValidator
  */
 public class TelFieldValidator extends BaseFieldValidator {
 
 	/**
 	 * 電話番号形式チェックバリデータのキー文字列定数．
 	 */
-	public static final String TEL_FIELD_VALIDATOR_KEY =
-		"valid.malformed";
+	public static final String VALIDATOR_KEY = "valid.malformed";
 
 	public TelFieldValidator(AppMessagesContainer container) {
 		super(container);
@@ -57,21 +55,17 @@ public class TelFieldValidator extends BaseFieldValidator {
 				+ "\\d{2,4}"
 				+ delimiter
 				+ "\\d{4}$");
-		return pattern.matcher(_Str.getLinkedString(delimiter, tel1, tel2, tel3)).matches();
+		return pattern.matcher(String.join(delimiter, tel1, tel2, tel3)).matches();
 	}
 
 	@Override
 	protected String getDefaultMessageKey() {
-		return TEL_FIELD_VALIDATOR_KEY;
+		return VALIDATOR_KEY;
 	}
 
 	public TelFieldValidator delimiter(String delimiter) {
 		this.delimiter = delimiter;
 		return this;
-	}
-
-	public String getDelimiter() {
-		return this.delimiter;
 	}
 
 }

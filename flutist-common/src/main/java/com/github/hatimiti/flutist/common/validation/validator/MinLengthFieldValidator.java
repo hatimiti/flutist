@@ -4,31 +4,31 @@ import com.github.hatimiti.flutist.common.message.AppMessagesContainer;
 import com.github.hatimiti.flutist.common.validation.Vval;
 
 /**
- * 最小文字数チェック[半角]を行うバリデータクラスです．
+ * 最小文字数チェックバリデータ．
  * @author hatimiti
+ * @see BaseFieldValidator
  */
-public abstract class MinLengthWithHalfSizeFieldValidator extends BaseFieldValidator {
+public abstract class MinLengthFieldValidator extends BaseFieldValidator {
 
-	public static final String MIN_LENGTH_WITH_HALF_SIZE_FIELD_VALIDATOR_KEY =
-		"valid.min.length.with.half.size";
+	public static final String VALIDATOR_KEY = "valid.min.length";
 
 	/** 最大文字数 */
 	protected int min;
 
-	public MinLengthWithHalfSizeFieldValidator(AppMessagesContainer container) {
+	public MinLengthFieldValidator(AppMessagesContainer container) {
 		super(container);
 	}
 
+	@Override
 	protected boolean checkSpecifically(Vval value) {
 		return checkMinLengthWithHalfSize(value.getValues()[0], this.min);
 	}
 
 	public static boolean checkMinLengthWithHalfSize(String value, int min) {
-		return HalfSizeFieldValidator.checkHalfSize(value)
-				&& value.length() >= min;
+		return min <= value.length();
 	}
 
-	public MinLengthWithHalfSizeFieldValidator setMin(int min) {
+	public MinLengthFieldValidator min(int min) {
 		this.min = min;
 		return this;
 	}

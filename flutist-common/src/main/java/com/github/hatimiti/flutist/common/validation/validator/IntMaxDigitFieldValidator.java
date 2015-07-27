@@ -5,18 +5,18 @@ import com.github.hatimiti.flutist.common.util._Str;
 import com.github.hatimiti.flutist.common.validation.Vval;
 
 /**
- * 整数桁チェックを行うバリデータクラス．
+ * 整数最大桁チェックバリデータ．<br />
  * 指定された文字列が整数かどうかも合わせてチェックする．
  * 「-123」などは3桁と判断してチェックする(マイナス記号は桁数に含めない)．
  * @author hatimiti
+ * @see BaseFieldValidator
  */
 public class IntMaxDigitFieldValidator extends BaseFieldValidator {
 
 	/**
 	 * 整数 & 最大桁チェック(IntDigitFieldValidator.java)のデフォルトメッセージキー
 	 */
-	public static final String INT_MAX_DIGIT_FIELD_VALIDATOR_KEY =
-		"valid.int.max.digit";
+	public static final String VALIDATOR_KEY = "valid.int.max.digit";
 
 	/** 桁数 */
 	public int max;
@@ -25,6 +25,7 @@ public class IntMaxDigitFieldValidator extends BaseFieldValidator {
 		super(container);
 	}
 
+	@Override
 	protected boolean checkSpecifically(Vval value) {
 		return checkIntMaxDigit(value.getValues()[0], this.max);
 	}
@@ -57,7 +58,7 @@ public class IntMaxDigitFieldValidator extends BaseFieldValidator {
 
 	@Override
 	protected String getDefaultMessageKey() {
-		return INT_MAX_DIGIT_FIELD_VALIDATOR_KEY;
+		return VALIDATOR_KEY;
 	}
 
 }

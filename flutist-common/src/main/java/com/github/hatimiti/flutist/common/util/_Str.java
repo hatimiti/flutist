@@ -1,13 +1,15 @@
 package com.github.hatimiti.flutist.common.util;
 
+import static com.github.hatimiti.flutist.common.util.CharacterEncoding.*;
+import static com.github.hatimiti.flutist.common.util._Obj.*;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import org.seasar.util.lang.StringUtil;
@@ -24,6 +26,11 @@ public final class _Str {
 	public static final String EMPTY = "";
 
 	/**
+	 * ゼロ(0)を表す定数(="0")
+	 */
+	public static final String ZERO = "0";
+
+	/**
 	 * HTTPエスケープ文字(&)を表す文字(="&amp;")
 	 */
 	public static final String HTTP_AMP = "&amp;";
@@ -31,17 +38,7 @@ public final class _Str {
 	/**
 	 * 改行文字
 	 */
-	public static final String LINE_SEPARATOR = System.getProperty("line.separator");
-
-	/**
-	 * 暗号化アルゴリズム SHA-1 の文字列定数("SHA-1")
-	 */
-	public static final String ENC_SHA1 = "SHA-1";
-
-	/**
-	 * 暗号化アルゴリズム MD5 の文字列定数("MD5")
-	 */
-	public static final String ENC_MD5 = "MD5";
+	public static final String LINE_SEPARATOR = System.lineSeparator();
 
 	/**
 	 * private コンストラクタ
@@ -78,6 +75,8 @@ public final class _Str {
 	 * @return 文字列を含んでいるかどうか
 	 */
 	public static boolean contains(String value, String searchString) {
+		Objects.requireNonNull(value);
+		Objects.requireNonNull(searchString);
 		return StringUtil.contains(value, searchString);
 	}
 
@@ -103,7 +102,7 @@ public final class _Str {
 	 * 整数文字列かどうかを判断する．
 	 * 整数文字列の場合は true を返す．
 	 */
-	public static boolean isFullSizeNumString(String value) {
+	public static boolean isFullSizeNumeric(String value) {
 		Pattern pattern =
 			Pattern.compile("^[-]?[1-9|１－９]?[0-9|０-９]+$");
 		return pattern.matcher(value).matches();
@@ -118,11 +117,11 @@ public final class _Str {
 	 */
 	public static String convertToHalfSizeNumString(String value) {
 
-		if (!isFullSizeNumString(value)) {
+		if (!isFullSizeNumeric(value)) {
 			return value;
 		}
 
-		StringBuffer result = new StringBuffer();
+		StringBuilder result = new StringBuilder();
 
 		int count = 0;
 
@@ -140,66 +139,6 @@ public final class _Str {
 			}
 
 			result.append(ch);
-		}
-
-		return result.toString();
-	}
-
-	/**
-	 * SHA-1暗号で、与えられた値を暗号化する．
-	 * 暗号化した文字列は16進数で表現されている．
-	 * 与えられた値が null または 空文字 の場合は、空文字を返す．
-	 * @param value 暗号対象文字列
-	 * @return value を暗号化した16進数文字列
-	 */
-	public static String encryptBySHA1(String value)
-			throws NoSuchAlgorithmException {
-		return encrypt(ENC_SHA1, value);
-	}
-
-	/**
-	 * MD5暗号で、与えられた値を暗号化する．
-	 * 暗号化した文字列は16進数で表現されている．
-	 * 与えられた値が null または 空文字 の場合は、空文字を返す．
-	 * @param value 暗号対象文字列
-	 * @return value を暗号化した16進数文字列
-	 * @throws NoSuchAlgorithmException アルゴリズム存在例外
-	 */
-	public static String encryptByMD5(String value) {
-		try {
-			return encrypt(ENC_MD5, value);
-		} catch (NoSuchAlgorithmException e) {
-			return EMPTY;
-		}
-	}
-
-	/**
-	 * 指定されたアルゴリズムで、与えられた値を暗号化する．
-	 * 暗号化した文字列は16進数で表現されている．
-	 * 与えられた値が null または 空文字 の場合は、空文字を返す．
-	 * @param algorithm 暗号アルゴリズム
-	 * @param value 暗号対象文字列
-	 * @return value を暗号化した16進数文字列
-	 * @throws NoSuchAlgorithmException アルゴリズム存在例外
-	 */
-	public static String encrypt(
-			String algorithm,
-			String value) throws NoSuchAlgorithmException {
-
-		if (isEmpty(value)) {
-			return EMPTY;
-		}
-
-		MessageDigest md5 = MessageDigest.getInstance(algorithm);
-		md5.reset();
-		md5.update(value.getBytes());
-
-		byte[] digest = md5.digest();
-
-		StringBuilder result = new StringBuilder();
-
-		for (byte b : digest) {
-			result.append(Integer.toHexString(0xFF & b));
 		}
 
 		return result.toString();
@@ -268,7 +207,7 @@ public final class _Str {
 	 * @return 先頭が大文字に変換された文字列
 	 */
 	public static String toUpperCaseFirstChar(final String value) {
-		if (_Str.isEmpty(value)) {
+		if (isEmpty(value)) {
 			return value;
 		}
 
@@ -288,7 +227,7 @@ public final class _Str {
 	 * @return 先頭が小文字に変換された文字列
 	 */
 	public static String toLowerCaseFirstChar(final String value) {
-		if (_Str.isEmpty(value)) {
+		if (isEmpty(value)) {
 			return value;
 		}
 
@@ -303,114 +242,41 @@ public final class _Str {
 	}
 
 	/**
-	 * 与えられた Number が空の場合は 空文字 に変換する．
+	 * 与えられたオブジェクトが空の場合は null に変換する．
 	 */
-	public static String toEmptyIfEmpty(final Number value) {
-		return _Obj.isEmpty(value) ? "" : String.valueOf(value);
+	public static String asStrOrNull(final Object value) {
+		return asStrOrDefault(value, null);
 	}
 
 	/**
-	 * 与えられた Number が空の場合は null に変換する．
+	 * 与えられたオブジェクトが空の場合は 0 に変換する．
 	 */
-	public static String toNullIfEmpty(final Number value) {
-		return _Obj.isEmpty(value) ? null : String.valueOf(value);
-	}
-
-	/**
-	 * 与えられた Number が空の場合は 0 に変換する．
-	 */
-	public static String toZeroIfEmpty(final Number value) {
-		return _Obj.isEmpty(value) ? "0" : String.valueOf(value);
-	}
-
-	/**
-	 * 与えられた文字列が空の場合は null に変換する．
-	 */
-	public static String toNullIfEmpty(final String value) {
-		return isEmpty(value) ? null : value;
-	}
-
-	/**
-	 * 与えられた文字列が空の場合は 0 に変換する．
-	 */
-	public static String toZeroIfEmpty(final String value) {
-		return isEmpty(value) ? "0" : value;
-	}
-
-	/**
-	 * 与えられた文字列が空の場合は空文字に変換する．
-	 */
-	public static String toEmptyIfEmpty(final String value) {
-		return isEmpty(value) ? EMPTY : value;
-	}
-
-	/**
-	 * 指定された文字列配列を、指定された区切り文字列で連結した文字列を返す．
-	 * 文字列A = abc, 文字列B = def, 区切文字 = , の場合、
-	 * 返される値は「abc,def」となる．
-	 * @param delimiter 区切り文字列
-	 * @param strs 連結する文字列配列
-	 * @return 区切り文字で連結された文字列
-	 */
-	public static String getLinkedString(String delimiter, String... strs) {
-
-		String _delimiter = delimiter;
-
-		if (isEmpty(_delimiter)) {
-			_delimiter = EMPTY;
-		}
-		if (strs == null) {
-			return EMPTY;
-		}
-
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < strs.length - 1; i++) {
-			sb.append(strs[i]).append(_delimiter);
-		}
-
-		sb.append(strs[strs.length - 1]);
-
-		return sb.toString();
-	}
-
-	/**
-	 * 与えられた文字列が null かどうかチェックし、
-	 *  null の場合は空文字に変換し返す．
-	 *  @param value チェック対象文字列
-	 *  @param null の場合は空文字、そうでない場合はそのまま値を返す．
-	 */
-	public static String toEmpty(String value) {
-		if (value == null) {
-			return EMPTY;
-		}
-		return value;
+	public static String asStrOrZero(final Object value) {
+		return asStrOrDefault(value, ZERO);
 	}
 
 	/**
 	 * 与えられたオブジェクトが null かどうかチェックし、
 	 *  null の場合は空文字に変換し返す．
-	 * @param obj 変換対象文字列
-	 * @return null の場合は空文字、そうでない場合は Object.toString() 値を返す．
+	 * @param value 変換対象
+	 * @return 引数 {@code value} が {@code null} の場合は空文字、そうでない場合は {@code Object#toString()} 値を返す．
 	 */
-	public static String toEmpty(Object obj) {
-		if (obj == null) {
-			return EMPTY;
-		}
-		return obj.toString();
+	public static String asStrOrEmpty(Object value) {
+		return asStrOrDefault(value, EMPTY);
 	}
 
 	/**
-	 * 与えられた文字列が null かどうかチェックし、
+	 * 与えられた文字列が null、空文字、空オブジェクト(例えばList#isEmpty())かどうかチェックし、
 	 *  null の場合はデフォルト文字列に変換し返す．
 	 *  @param value チェック対象文字列
 	 *  @param def デフォルト文字列
 	 *  @param null の場合はデフォルト文字列、そうでない場合はそのまま値を返す．
 	 */
-	public static String toDefault(final String value, final String def) {
-		if (value == null) {
+	public static String asStrOrDefault(final Object value, final String def) {
+		if (isEmpty(value)) {
 			return def;
 		}
-		return value;
+		return value.toString();
 	}
 
 	/**
@@ -566,7 +432,7 @@ public final class _Str {
 	 */
 	public static String encode(String value) {
 
-		if (_Str.isEmpty(value)) {
+		if (isEmpty(value)) {
 			return value;
 		}
 
@@ -585,9 +451,8 @@ public final class _Str {
 	public static String encodeUrl(final String value) {
 
 		try {
-			return URLEncoder.encode(value, "UTF-8");
+			return URLEncoder.encode(value, UTF8.toString());
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
 			return value;
 		}
 	}
@@ -599,7 +464,7 @@ public final class _Str {
 	 */
 	public static String decodeUrl(final String value) {
 		try {
-			return URLDecoder.decode(value, "UTF-8");
+			return URLDecoder.decode(value, UTF8.toString());
 		} catch (UnsupportedEncodingException e) {
 			return value;
 		}
@@ -611,7 +476,7 @@ public final class _Str {
 	 * @param length 0 埋め後の桁数を指定する．
 	 * @return 左側を 0 埋めされた文字列を返す．
 	 */
-	public static String paddingZeroLeft(
+	public static String paddingLeftByZero(
 			final String value,
 			final int length) {
 		final StringBuilder sb = new StringBuilder(value);
@@ -621,14 +486,13 @@ public final class _Str {
 		return sb.toString();
 	}
 
-
 	/**
 	 * 与えられた文字列をカンマ(,)の3桁区切りにして返す．<br>
 	 * 与えられた文字列が数値形式でなければそのまま返す．
 	 * @param value 数値形式の文字列
 	 * @return value をカンマで3桁区切りした文字列
 	 */
-	public static String partitionWithComma(
+	public static String partition3DigitByComma(
 			final String value) {
 		try {
 			new Integer(value);
@@ -638,49 +502,22 @@ public final class _Str {
 		return value.replaceAll("(?<=[0-9])(?=([0-9]{3})+$)", ",");
 	}
 
-	public static String getIntegerOf(BigDecimal value) {
+	public static String partOfInteger(BigDecimal value) {
 		if (value == null) {
 			return "";
 		}
-		String strval = toEmptyIfEmpty(value);
+		String strval = asStrOrEmpty(value);
 		int idx = strval.indexOf('.');
 		return idx < 0 ? strval : strval.substring(0, idx);
 	}
 
-	public static String getDecimalOf(BigDecimal value) {
+	public static String partOfDecimal(BigDecimal value) {
 		if (value == null) {
 			return "";
 		}
-		String strval = toEmptyIfEmpty(value);
+		String strval = asStrOrEmpty(value);
 		int idx = strval.indexOf('.');
 		return idx < 0 ? "0" : strval.substring(idx + 1, strval.length());
-	}
-
-	/**
-	 *  null または空文字かどうかを判断する．
-	 * @param 判定文字列
-	 * @return null または空文字の場合は true を返す．<br>
-	 */
-	private static boolean isEmpty(String value) {
-		return value == null || value.isEmpty();
-	}
-
-	/**
-	 * 渡された文字列配列が null または、空配列かどうかを判断する．
-	 * @param 判定文字列配列
-	 * @return null または空配列の場合は true を返す．<br>
-	 */
-	private static boolean isEmpty(String[] values) {
-		return values == null || values.length <= 0;
-	}
-
-	/**
-	 * テスト用 main メソッド
-	 */
-	public static void main(String[] args) throws Exception {
-
-		System.out.println(escapeForSqlLike("％%＿_あいうえお", '\\'));
-
 	}
 
 }

@@ -5,12 +5,13 @@ import com.github.hatimiti.flutist.common.util._Obj;
 import com.github.hatimiti.flutist.common.validation.Vval;
 
 /**
- * 整数チェック(Long値)を行うバリデータクラス
+ * 整数チェック(Long値)バリデータ．
  * @author hatimiti
+ * @see BaseFieldValidator
  */
 public class LongFieldValidator extends BaseFieldValidator {
 
-	public static final String LONG_FIELD_VALIDATOR_KEY ="valid.long";
+	public static final String VALIDATOR_KEY ="valid.long";
 
 	public LongFieldValidator(AppMessagesContainer container) {
 		super(container);
@@ -42,7 +43,7 @@ public class LongFieldValidator extends BaseFieldValidator {
 
 	@Override
 	protected String getDefaultMessageKey() {
-		return LONG_FIELD_VALIDATOR_KEY;
+		return VALIDATOR_KEY;
 	}
 
 }

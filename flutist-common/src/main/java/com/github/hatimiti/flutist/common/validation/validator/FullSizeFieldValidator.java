@@ -7,16 +7,16 @@ import com.github.hatimiti.flutist.common.util._Obj;
 import com.github.hatimiti.flutist.common.validation.Vval;
 
 /**
- * 全角文字チェックを行うバリデータクラス．
+ * 全角文字チェックバリデータ．
  * @author hatimiti
+ * @see BaseFieldValidator
  */
 public class FullSizeFieldValidator extends BaseFieldValidator {
 
 	/**
 	 * 全角文字チェックバリデータのキー文字列定数．
 	 */
-	public static final String FULL_SIZE_FIELD_VALIDATOR_KEY =
-		"valid.full.size";
+	public static final String VALIDATOR_KEY = "valid.full.size";
 
 	public FullSizeFieldValidator(AppMessagesContainer container) {
 		super(container);
@@ -44,7 +44,7 @@ public class FullSizeFieldValidator extends BaseFieldValidator {
 
 	@Override
 	protected String getDefaultMessageKey() {
-		return FULL_SIZE_FIELD_VALIDATOR_KEY;
+		return VALIDATOR_KEY;
 	}
 
 }
