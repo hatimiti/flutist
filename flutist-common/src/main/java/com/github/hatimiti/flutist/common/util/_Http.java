@@ -1,15 +1,21 @@
 package com.github.hatimiti.flutist.common.util;
 
+import static com.github.hatimiti.flutist.common.util.MIMEType.*;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Writer;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -62,6 +68,57 @@ public final class _Http {
 		res.setHeader("Expires", "0");
         res.setHeader("Cache-Control", "must-revalidate, post-check=0,pre-check=0");
         res.setHeader("Pragma", "private");
+	}
+
+	public static void downloadZip(
+			final HttpServletResponse res,
+			final CharacterEncoding charEnc,
+			final File rootfile,
+			final String zipFileName) throws FileNotFoundException, IOException {
+
+		try (ZipOutputStream out = new ZipOutputStream(getOutputStreamForDownload(
+				res, charEnc, APPL_OCTET_STREAM, zipFileName))) {
+			zip(out, rootfile, rootfile);
+		}
+	}
+
+	private static void zip(ZipOutputStream zipOutputStream, File rootFile, File targetFile)
+			throws FileNotFoundException, IOException {
+
+		if (targetFile.isDirectory()) {
+			for (File f : targetFile.listFiles()) {
+				zip(zipOutputStream, rootFile, f);
+			}
+			return;
+		}
+
+		ZipEntry zipEntry = new ZipEntry(getZipEntryPath(rootFile, targetFile));
+		try (BufferedInputStream inputStream
+				= new BufferedInputStream(new FileInputStream(targetFile))) {
+
+			zipOutputStream.putNextEntry(zipEntry);
+			writeBufStream(inputStream, zipOutputStream);
+			zipOutputStream.closeEntry();
+		}
+	}
+
+	private static String getZipEntryPath(File rootFile, File targetFile) {
+		int lengthToExtractZipPath
+			= rootFile.getPath().length() - rootFile.getName().length();
+		return targetFile.getPath().replace("\\\\", "/")
+				.substring(lengthToExtractZipPath);
+	}
+
+	private static void writeBufStream(InputStream inputStream, OutputStream outputStream) throws IOException {
+		int availableByteNumber;
+		while (0 < (availableByteNumber = inputStream.available())) {
+			byte[] buffers = new byte[availableByteNumber];
+			int readByteNumber = inputStream.read(buffers);
+			if (readByteNumber < 0) {
+				break;
+			}
+			outputStream.write(buffers, 0, readByteNumber);
+		}
 	}
 
 	public static void write(final OutputStream os, final File file) throws IOException {
